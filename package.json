@@ -1,0 +1,19 @@
+{
+  "name": "mytwitter",
+  "version": "1.0.0",
+  "description": "Twitter clone using Node.js and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pagarevijayy/myTwitter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pagarevijayy/myTwitter/issues"
+  },
+  "homepage": "https://github.com/pagarevijayy/myTwitter#readme"
+}
