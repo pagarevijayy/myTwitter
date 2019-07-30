@@ -4,6 +4,8 @@
   "description": "Twitter clone using Node.js and MongoDB",
   "main": "index.js",
   "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/pagarevijayy/myTwitter/issues"
   },
-  "homepage": "https://github.com/pagarevijayy/myTwitter#readme"
+  "homepage": "https://github.com/pagarevijayy/myTwitter#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.7"
+  }
 }
