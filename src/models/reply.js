@@ -1,3 +1,5 @@
+//implement referential integrity
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
@@ -16,23 +18,25 @@ const replySchema = new Schema({
     },
     userName: {
         type: String,
+        lowercase: true,
         // ref: 'User',
         trim: true,
         required: true
     },
     replyText: {
         type: String,
+        trim: true,
         required: true
     },
     likeCount: {
-        type: Number
+        type: Number,
+        min: 0
     },
     TimePosted: {
-        type: Date
+        type: Date,
+        required: true
     }
 });
-
-// idSample = 5d3ae5eddf36dd148e68b2bb, 5d3ae5eddf36dd148e68b2boz
 
 const Replie = mongoose.model('Replie', replySchema);
 

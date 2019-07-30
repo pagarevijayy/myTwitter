@@ -1,3 +1,5 @@
+//implement referential integrity
+
 const mongoose = require('mongoose');
 const validator = require('validator');
 const Schema = mongoose.Schema;
@@ -13,24 +15,29 @@ const followSchema = new Schema({
     },
     userName: {
         type: String,
-        required: true,
-        trim: true
+        lowercase: true,
+        trim: true,
+        required: true
     }
 });
 
 const userSchema = new Schema({
     userName: {
         type: String,
-        required: true,
-        trim: true
+        lowercase: true,
+        trim: true,
+        required: true
     },
     userHandle: {
         type: String,
+        lowercase: true,
+        trim: true,
+        unique: true,
         required: true,
-        trim: true
     },
     email: {
         type: String,
+        lowercase: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -43,6 +50,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         trim: true,
+        required: true,
         validate(value) {
             //can also set "min.length: 7" as a key-value pair above 
             if (value.length < 6) {
@@ -52,11 +60,10 @@ const userSchema = new Schema({
         }
     },
     userDOB: {
-        type: Date,
+        type: Date
     },
     userBio: {
         type: String,
-        required: true,
         trim: true
     },
     followers: [followSchema],

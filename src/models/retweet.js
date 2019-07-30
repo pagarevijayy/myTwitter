@@ -1,3 +1,5 @@
+//implement referential integrity
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -15,7 +17,8 @@ const retweetSchema = new Schema({
         required: true
     },
     TimePosted: {
-        type: Date
+        type: Date,
+        required: true
     }
 });
 
