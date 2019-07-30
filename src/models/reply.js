@@ -36,21 +36,21 @@ const replySchema = new Schema({
 
 const Replie = mongoose.model('Replie', replySchema);
 
-//creating document
-// const reply = new Replie( {
-//     tweetId : mongoose.Types.ObjectId(),
-//     userId: mongoose.Types.ObjectId(),
-//     userName: "abhi",
-//     replyText: "awesome",
-//     likeCount: 11,
-//     TimePosted: Date.now()
-// });
+creating document
+const reply = new Replie( {
+    tweetId : mongoose.Types.ObjectId(),
+    userId: mongoose.Types.ObjectId(),
+    userName: "abhi",
+    replyText: "awesome",
+    likeCount: 11,
+    TimePosted: Date.now()
+});
 
 
-// reply.save().then((result) => {
-//      console.log(result);
-// }).catch((e) => {
-//     console.log(e);
-// })
+reply.save().then((result) => {
+     console.log(result);
+}).catch((e) => {
+    console.log(e);
+})
 
 module.exports = Replie;

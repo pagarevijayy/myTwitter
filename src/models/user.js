@@ -66,26 +66,26 @@ const userSchema = new Schema({
 const User = mongoose.model('User', userSchema);
 
 //creating document
-// const user = new User( {
-//     userName: "mihir",
-//     userHandle: "mihirrocks",
-//     email: "pqr@example.com",
-//     password: "bye345vye",
-//     userDOB: Date.now(),
-//     userBio: "I love to play volleyball",
-//     followers: [
-//         {userId: mongoose.Types.ObjectId(),userName: "dhruv"},
-//         {userId: mongoose.Types.ObjectId(),userName: "vijay"}],
-//     following: [
-//         {userId: mongoose.Types.ObjectId(),userName: "abhishek"},
-//         {userId: mongoose.Types.ObjectId(),userName: "ceara"}]
-// });
+const user = new User( {
+    userName: "mihir",
+    userHandle: "mihirrocks",
+    email: "pqr@example.com",
+    password: "bye345vye",
+    userDOB: Date.now(),
+    userBio: "I love to play volleyball",
+    followers: [
+        {userId: mongoose.Types.ObjectId(),userName: "dhruv"},
+        {userId: mongoose.Types.ObjectId(),userName: "vijay"}],
+    following: [
+        {userId: mongoose.Types.ObjectId(),userName: "abhishek"},
+        {userId: mongoose.Types.ObjectId(),userName: "ceara"}]
+});
 
 
-// user.save().then((result) => {
-//      console.log(result);
-// }).catch((e) => {
-//     console.log(e);
-// });
+user.save().then((result) => {
+     console.log(result);
+}).catch((e) => {
+    console.log(e);
+});
 
 module.exports = User;
