@@ -36,7 +36,7 @@ const replySchema = new Schema({
 
 const Replie = mongoose.model('Replie', replySchema);
 
-creating document
+// creating document
 const reply = new Replie( {
     tweetId : mongoose.Types.ObjectId(),
     userId: mongoose.Types.ObjectId(),
