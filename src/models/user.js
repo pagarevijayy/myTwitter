@@ -17,13 +17,13 @@ const followSchema = new Schema({
 });
 
 const userSchema = new Schema({
-    userName: {
+    name: {
         type: String,
         trim: true,
         required: true,
         maxlength: 50
     },
-    userHandle: {
+    handle: {
         type: String,
         lowercase: true,
         trim: true,
