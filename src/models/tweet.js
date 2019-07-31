@@ -18,24 +18,17 @@ const tweetSchema = new Schema({
     },
     likeCount: {
         type: Number,
-        required: true
+        default: 0
     },
     retweetCount: {
         type: Number,
-        required: true
+        default: 0
     },
     replyCount: {
         type: Number,
-        required: true
-    },
-    reply: {
-        type: ObjectId,
-        ref: 'Replie'
+        default: 0
     }
-
 });
-
-
 
 const Tweet = mongoose.model('Tweet', tweetSchema);
 
