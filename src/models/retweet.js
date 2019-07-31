@@ -14,7 +14,7 @@ const retweetSchema = new Schema({
         ref: 'Tweet',
         required: true
     },
-    TimePosted: {
+    timePosted: {
         type: Date,
         required: true
     }
