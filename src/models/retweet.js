@@ -1,19 +1,17 @@
-//implement referential integrity
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const retweetSchema = new Schema({
-    userId: {
+    user: {
         type: ObjectId,
-        // ref: 'User',
+        ref: 'User',
         required: true
     },
-    tweetId: {
+    tweet: {
         type: ObjectId,
-        // ref: 'Tweet',
+        ref: 'Tweet',
         required: true
     },
     TimePosted: {
@@ -23,18 +21,5 @@ const retweetSchema = new Schema({
 });
 
 const Retweet = mongoose.model('Retweet', retweetSchema);
-
-const retweet = new Retweet( {
-    tweetId : mongoose.Types.ObjectId(),
-    userId: mongoose.Types.ObjectId(),
-    TimePosted: Date.now()
-});
-
-
-retweet.save().then((result) => {
-     console.log(result);
-}).catch((e) => {
-    console.log(e);
-})
 
 module.exports = Retweet;

@@ -4,8 +4,6 @@ require('./models/reply');
 require('./models/user');
 require('./models/retweet');
 
-
-
 const app = express();
 
 const port = process.env.PORT || 3000;
