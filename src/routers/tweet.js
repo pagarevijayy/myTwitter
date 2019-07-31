@@ -6,11 +6,10 @@ const Replie = require("../models/reply");
 
 const router = new express.Router();
 
-//to be removed later
+//Note: integrate auth later.
+//mongoose below to be removed later
 const mongoose = require('mongoose');
 
-
-//Note: integrate auth later.
 
 router.post("/tweet", async (req, res) => {
     const tweet = new Tweet({
@@ -39,19 +38,17 @@ router.delete("/tweet/:id", async (req, res) => {
     }
 });
 
-//hardCoded tweetId, dynamiCoded user
-router.post("/retweet", async (req, res) => {
+
+router.post("/retweet/:id", async (req, res) => {
     const retweet = new Retweet({
         //user: req.user._id
         //(after auth implementation include above parameter)
-        //tweet logic: think via event listener
-        tweet: mongoose.Types.ObjectId("5d41795005d29860f154b9d8"),
+        tweet: req.params.id,
         user: mongoose.Types.ObjectId(),
         timePosted: Date.now()
     });
     try {
-        //fetch tweet id from above
-        await Tweet.findOneAndUpdate({_id : mongoose.Types.ObjectId("5d41795005d29860f154b9d8")}, {$inc : {'retweetCount' : 1}}, {new: true});
+        await Tweet.findOneAndUpdate({_id : req.params.id}, {$inc : {'retweetCount' : 1}}, {new: true});
         await retweet.save();
         res.status(201).send(retweet);
     } catch (e) {
@@ -59,13 +56,12 @@ router.post("/retweet", async (req, res) => {
     }
 });
 
-router.post("/reply", async (req, res) => {
+router.post("/reply/:id", async (req, res) => {
     const reply = new Replie({
         ...req.body,
         //user: req.user._id
         //(after auth implementation include above parameter)
-        //tweet logic: think via event listener
-        tweet: mongoose.Types.ObjectId("5d41795005d29860f154b9d8"),
+        tweet: req.params.id,
         user: mongoose.Types.ObjectId(),
         timePosted: Date.now()
     });
