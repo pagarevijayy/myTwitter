@@ -72,11 +72,18 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-// userSchema.virtual('followers', {
-//     ref: 'User',
-//     localField: '',
-//     foreignField: ''
-// });
+//virtual property - tweets and retweets
+userSchema.virtual('tweets', {
+    ref: 'Tweet',
+    localField: '_id',
+    foreignField: 'user'
+});
+
+userSchema.virtual('retweets', {
+    ref: 'Retweet',
+    localField: '_id',
+    foreignField: 'user'
+});
 
 //hide details
 userSchema.methods.toJSON = function () {

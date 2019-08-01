@@ -7,6 +7,30 @@ const Like = require('../models/like');
 
 const router = new express.Router();
 
+// view profile
+router.get("/timeline/me", auth, async (req, res) => {
+    try{
+        await req.user.populate([{ path: 'tweets'},{ path: 'retweets'}]).execPopulate();
+
+        let arr = req.user.tweets;
+        arr = arr.concat(req.user.retweets);
+
+        arr.sort(function(a, b){
+            var keyA = new Date(a.updatedAt),
+                keyB = new Date(b.updatedAt);
+            // Compare the 2 dates
+            if(keyA < keyB) return -1;
+            if(keyA > keyB) return 1;
+            return 0;
+        });
+
+        res.send(arr);         
+        arr = [];
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.post("/tweet", auth, async (req, res) => {
     const tweet = new Tweet({
         ...req.body,
