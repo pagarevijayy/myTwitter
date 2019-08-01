@@ -28,6 +28,8 @@ const tweetSchema = new Schema({
         type: Number,
         default: 0
     }
+},{
+    timestamps: true
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);

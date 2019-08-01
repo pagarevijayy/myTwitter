@@ -11,8 +11,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const followSchema = new Schema({
     user: {
         type: ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User'
     }
 });
 
@@ -65,6 +64,8 @@ const userSchema = new Schema({
             required: true
         }
     }]
+},{
+    timestamps: true
 });
 
 // userSchema.virtual('followers', {
@@ -128,5 +129,24 @@ userSchema.pre('save', async function (next) {
 });
 
 const User = mongoose.model('User', userSchema);
+
+//creating user document
+
+// const user = new User({
+//     userName: "vijay pagare",
+//     userHandle: "pagarevijayy",
+//     userBio: "cricket rocks!",
+//     email: "abc@example.com",
+//     password: "hiii123byee",
+//     userDOB: Date.now(),
+//     followers: [mongoose.Types.ObjectId(),mongoose.Types.ObjectId(),mongoose.Types.ObjectId()],
+//     following: [mongoose.Types.ObjectId()]
+// })
+
+// user.save().then((result) => {
+//     console.log(result);
+// }).catch((e) => {
+//     console.log(e);
+// })
 
 module.exports = User;

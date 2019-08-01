@@ -13,11 +13,9 @@ const retweetSchema = new Schema({
         type: ObjectId,
         ref: 'Tweet',
         required: true
-    },
-    TimePosted: {
-        type: Date,
-        required: true
     }
+},{
+    timestamps: true
 });
 
 const Retweet = mongoose.model('Retweet', retweetSchema);
