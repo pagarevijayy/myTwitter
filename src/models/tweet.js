@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Retweet = require('./retweet');
+const Replie = require('./reply');
+
 const Schema = mongoose.Schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -30,6 +33,14 @@ const tweetSchema = new Schema({
     }
 },{
     timestamps: true
+});
+
+//Cascade delete
+tweetSchema.pre('remove', async function(next) {
+    const tweet = this;
+    await Retweet.deleteMany({tweet: tweet._id});
+    await Replie.deleteMany({tweet: tweet._id});
+    next();
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);
