@@ -25,13 +25,11 @@ router.post("/tweet", auth, async (req, res) => {
 
 router.delete("/tweet", auth, async (req, res) => {
     try {
-        const tweet = await Tweet.findOneAndDelete({
-            _id: req.body.tweet,
-            user: req.user._id
-        });
+        const tweet = await Tweet.findOne({ _id: req.body.tweet, user: req.user._id });
         if (!tweet) {
             return res.status(400).send();
         }
+        await tweet.remove();
         res.send(tweet);
     } catch (e) {
         res.status(500).send(e);
@@ -81,6 +79,19 @@ router.post("/retweet", auth, async (req, res) => {
     }
 });
 
+router.delete("/retweet",auth, async (req, res) => {
+    try {
+        const retweet = await Retweet.findOne({ _id: req.body.retweet, user: req.user._id });
+        if (!retweet) {
+            return res.status(400).send()
+        }
+        await retweet.remove();
+        res.send(retweet);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.post("/reply", auth, async (req, res) => {
     const reply = new Replie({
         ...req.body,
@@ -94,7 +105,20 @@ router.post("/reply", auth, async (req, res) => {
     }
 });
 
-//delete reply
+router.delete("/reply",auth, async (req, res) => {
+    try {
+        const reply = await Replie.findOne({ _id: req.body.reply, user: req.user._id });
+        if (!reply) {
+            return res.status(400).send()
+        }
+        await reply.remove();
+        res.send(reply);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+
 //unlike logic for both reply and tweet
 
 router.post("/reply/like", auth, async (req, res) => {

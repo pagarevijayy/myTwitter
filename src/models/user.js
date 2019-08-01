@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Tweet = require('./tweet');
+const Retweet = require('./retweet');
+const Replie = require('./reply');
 
 const Schema = mongoose.Schema;
 
@@ -126,6 +129,15 @@ userSchema.pre('save', async function (next) {
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
+    next();
+});
+
+//Cascade delete
+userSchema.pre('remove', async function(next) {
+    const user = this;
+    await Tweet.deleteMany({user: user._id})
+    await Retweet.deleteMany({user: user._id});
+    await Replie.deleteMany({user: user._id});
     next();
 });
 
