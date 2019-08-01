@@ -17,13 +17,13 @@ const followSchema = new Schema({
 });
 
 const userSchema = new Schema({
-    userName: {
+    name: {
         type: String,
         trim: true,
         required: true,
         maxlength: 50
     },
-    userHandle: {
+    handle: {
         type: String,
         lowercase: true,
         trim: true,
@@ -49,10 +49,10 @@ const userSchema = new Schema({
         required: true,
         minlength: 7
     },
-    userDOB: {
+    DOB: {
         type: Date
     },
-    userBio: {
+    bio: {
         type: String,
         trim: true,
         maxlength: 160
@@ -87,9 +87,13 @@ userSchema.methods.toJSON = function () {
 // authorization
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = await jwt.sign({ _id: user._id.toString() }, 'thisismytwitter');
+    const token = await jwt.sign({
+        _id: user._id.toString()
+    }, 'thisismytwitter');
 
-    user.tokens = user.tokens.concat({ token });
+    user.tokens = user.tokens.concat({
+        token
+    });
 
     await user.save();
 
@@ -97,8 +101,11 @@ userSchema.methods.generateAuthToken = async function () {
 }
 
 //authentication
-userSchema.statics.findbyCredentials = async (email, password) => {
-    const user = await User.findOne({ email });
+userSchema.statics.findByCredentials = async (email, password) => {
+
+    const user = await User.findOne({
+        email
+    });
     if (!user) {
         throw new Error("Unable to login.");
     }
