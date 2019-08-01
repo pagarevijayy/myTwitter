@@ -44,8 +44,7 @@ router.post("/retweet/:id", async (req, res) => {
         //user: req.user._id
         //(after auth implementation include above parameter)
         tweet: req.params.id,
-        user: mongoose.Types.ObjectId(),
-        timePosted: Date.now()
+        user: mongoose.Types.ObjectId()
     });
     try {
         await Tweet.findOneAndUpdate({_id : req.params.id}, {$inc : {'retweetCount' : 1}}, {new: true});
@@ -63,7 +62,6 @@ router.post("/reply/:id", async (req, res) => {
         //(after auth implementation include above parameter)
         tweet: req.params.id,
         user: mongoose.Types.ObjectId(),
-        timePosted: Date.now()
     });
     try {
         await reply.save();

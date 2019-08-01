@@ -22,11 +22,9 @@ const replySchema = new Schema({
     likeCount: {
         type: Number,
         min: 0
-    },
-    timePosted: {
-        type: Date,
-        required: true
     }
+},{
+    timestamps: true
 });
 
 const Replie = mongoose.model('Replie', replySchema);
