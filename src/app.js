@@ -1,8 +1,6 @@
 const express = require('express');
 require('./db/mongoose');
-require('./models/reply');
-require('./models/user');
-require('./models/retweet');
+const userRouter = require('./routers/user');
 
 const tweetRouter = require('./routers/tweet');
 
@@ -11,7 +9,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+
 app.use(tweetRouter);
+app.use(userRouter);
+
 
 //Server connection
 app.listen(port, () => {
