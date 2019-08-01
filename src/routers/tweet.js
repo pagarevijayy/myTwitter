@@ -7,16 +7,12 @@ const Replie = require("../models/reply");
 const router = new express.Router();
 
 //Note: integrate auth later.
-//mongoose below to be removed later
-const mongoose = require('mongoose');
 
 
-router.post("/tweet", async (req, res) => {
+router.post("/tweet", auth, async (req, res) => {
     const tweet = new Tweet({
         ...req.body,
-        //user: req.user._id
-        //(after auth implementation include above parameter)
-        user: mongoose.Types.ObjectId("5d4173bc7a5cc55b1444ccdf")
+        user: req.user._id
     });
     try {
         await tweet.save();
@@ -26,9 +22,9 @@ router.post("/tweet", async (req, res) => {
     }
 });
 
-router.delete("/tweet/:id", async (req, res) => {
+router.delete("/tweet",auth, async (req, res) => {
     try {
-        const tweet = await Tweet.findOneAndDelete({ _id: req.params.id });
+        const tweet = await Tweet.findOneAndDelete({ _id: req.body.tweet, user: req.user._id });
         if (!tweet) {
             return res.status(400).send()
         }
@@ -39,29 +35,31 @@ router.delete("/tweet/:id", async (req, res) => {
 });
 
 
-router.post("/retweet/:id", async (req, res) => {
+router.post("/retweet", auth, async (req, res) => {
     const retweet = new Retweet({
-        //user: req.user._id
-        //(after auth implementation include above parameter)
-        tweet: req.params.id,
-        user: mongoose.Types.ObjectId()
+        user: req.user._id,
+        tweet: req.body.tweet,
     });
     try {
-        await Tweet.findOneAndUpdate({_id : req.params.id}, {$inc : {'retweetCount' : 1}}, {new: true});
+        const existingRetweet = await Retweet.findOne({user: req.user._id, tweet: req.body.tweet});
+        if(existingRetweet){
+            await existingRetweet.remove();
+            await Tweet.findOneAndUpdate({_id : req.body.tweet}, {$inc : {'retweetCount' : -1}});
+            return res.send(existingRetweet);
+        }
+
         await retweet.save();
+        await Tweet.findOneAndUpdate({_id : req.body.tweet}, {$inc : {'retweetCount' : 1}});
         res.status(201).send(retweet);
     } catch (e) {
         res.status(400).send(e);
     }
 });
 
-router.post("/reply/:id", async (req, res) => {
+router.post("/reply", auth, async (req, res) => {
     const reply = new Replie({
         ...req.body,
-        //user: req.user._id
-        //(after auth implementation include above parameter)
-        tweet: req.params.id,
-        user: mongoose.Types.ObjectId(),
+        user: req.user._id,
     });
     try {
         await reply.save();
@@ -71,10 +69,13 @@ router.post("/reply/:id", async (req, res) => {
     }
 });
 
+//delete reply
+//unlike logic for both reply and tweet
 
-router.post("/reply/:id/like", async (req, res) => {
+
+router.post("/reply/like", auth, async (req, res) => { 
     try {
-        const reply = await Replie.findOneAndUpdate({_id :req.params.id}, {$inc : {'likeCount' : 1}},{new: true});
+        const reply = await Replie.findOneAndUpdate({_id :req.body.reply}, {$inc : {'likeCount' : 1}},{new: true});
         if (!reply) {
             return res.status(400).send()
         }
@@ -84,9 +85,9 @@ router.post("/reply/:id/like", async (req, res) => {
     }
 });
 
-router.post("/tweet/:id/like", async (req, res) => {
+router.post("/tweet/like", auth, async (req, res) => {
     try {
-        const tweet = await Tweet.findOneAndUpdate({_id :req.params.id}, {$inc : {'likeCount' : 1}},{new: true});
+        const tweet = await Tweet.findOneAndUpdate({_id :req.body.tweet}, {$inc : {'likeCount' : 1}},{new: true});
         if (!tweet) {
             return res.status(400).send()
         }
