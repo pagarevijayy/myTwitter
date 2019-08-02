@@ -26,6 +26,9 @@ const userSchema = new Schema({
         required: true,
         maxlength: 50
     },
+    avatar: {
+        type: Buffer
+    },
     handle: {
         type: String,
         lowercase: true,
@@ -92,6 +95,8 @@ userSchema.methods.toJSON = function () {
 
     delete userObject.password;
     delete userObject.tokens;
+    delete userObject.avatar;
+
 
     return userObject;
 }
@@ -103,9 +108,7 @@ userSchema.methods.generateAuthToken = async function () {
         _id: user._id.toString()
     }, 'thisismytwitter');
 
-    user.tokens = user.tokens.concat({
-        token
-    });
+    user.tokens = user.tokens.concat({ token });
 
     await user.save();
 
@@ -115,9 +118,7 @@ userSchema.methods.generateAuthToken = async function () {
 //authentication
 userSchema.statics.findByCredentials = async (email, password) => {
 
-    const user = await User.findOne({
-        email
-    });
+    const user = await User.findOne({ email });
     if (!user) {
         throw new Error("Unable to login.");
     }
