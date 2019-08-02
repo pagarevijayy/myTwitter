@@ -1,14 +1,47 @@
 const express = require('express');
 const auth = require('../middleware/auth');
+const extract = require('mention-hashtag');
+
 const Tweet = require("../models/tweet");
 const Retweet = require("../models/retweet");
 const Replie = require("../models/reply");
 const Like = require('../models/like');
+const User = require('../models/user');
 
 const router = new express.Router();
 
+
+//search - username and hastags
+// GET /search?name=abc%20xyz
+// GET /search?hashtag=xyz
+router.get("/search", auth , async (req, res) => {
+    try{
+        const searchName = await User.find({ name: req.query.name});
+
+        const searchHashtag = await Tweet.find({ hashtags: req.query.hashtag});
+
+        if(req.query.name)
+        {
+            if(searchName.length === 0){
+                return res.status(404).send();
+            }
+    
+            res.send(searchName);
+        } else {
+            if(searchHashtag.length === 0){
+                return res.status(404).send();
+            }
+    
+            res.send(searchHashtag);
+        }
+        
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
 // view profile
-router.get("/timeline/me", auth, async (req, res) => {
+router.get("/profile", auth, async (req, res) => {
     try{
         await req.user.populate([{ path: 'tweets'},{ path: 'retweets'}]).execPopulate();
 
@@ -16,11 +49,11 @@ router.get("/timeline/me", auth, async (req, res) => {
         arr = arr.concat(req.user.retweets);
 
         arr.sort(function(a, b){
-            var keyA = new Date(a.updatedAt),
-                keyB = new Date(b.updatedAt);
+            var keyA = new Date(a.createdAt),
+                keyB = new Date(b.createdAt);
             // Compare the 2 dates
-            if(keyA < keyB) return -1;
-            if(keyA > keyB) return 1;
+            if(keyA < keyB) return 1;
+            if(keyA > keyB) return -1;
             return 0;
         });
 
@@ -34,8 +67,10 @@ router.get("/timeline/me", auth, async (req, res) => {
 router.post("/tweet", auth, async (req, res) => {
     const tweet = new Tweet({
         ...req.body,
-        user: req.user._id
+        user: req.user._id,
+        hashtags: extract(req.body.text,{symbol: false, type: '#'})
     });
+
     try {
         await tweet.save();
         res.status(201).send(tweet);

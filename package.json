@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mention-hashtag": "^1.1.1",
     "mongoose": "^5.6.7",
     "validator": "^11.1.0"
   }
