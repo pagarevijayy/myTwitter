@@ -1,0 +1,20 @@
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: #14171A;
+}
+
+#sign-up-left {
+    background: url("../img/Twitter\ left\ side\ logo@2x.png") no-repeat center/cover;
+    height: 100vh;
+    color: #FFFFFF;
+}
+
+.container-2 {
+    margin-top: 30vh;
+    margin-left: 15%;
+    text-align: left;
+}
+
+.signup-img{
+    height: 55px;;
+}

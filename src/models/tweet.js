@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Retweet = require('./retweet');
 const Replie = require('./reply');
 
+
 const Schema = mongoose.Schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -19,6 +20,9 @@ const tweetSchema = new Schema({
         required: true,
         maxlength: 280
     },
+    hashtags:[{
+        type: String
+    }],
     likeCount: {
         type: Number,
         default: 0
