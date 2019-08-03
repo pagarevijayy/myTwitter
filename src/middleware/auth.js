@@ -3,6 +3,7 @@ const User = require('../models/user');
 
 const auth = async (req, res, next) => {
     try {
+
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, 'thisismytwitter');
         const user = await User.findOne({
@@ -18,11 +19,12 @@ const auth = async (req, res, next) => {
         req.user = user;
 
         next();
+
     } catch (e) {
         res.status(401).send({
             error: "Please authenticate."
         });
     }
-}
+};
 
 module.exports = auth;

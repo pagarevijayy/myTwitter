@@ -31,15 +31,16 @@ const tweetSchema = new Schema({
         type: Number,
         default: 0
     }
-},{
+}, {
     timestamps: true
 });
 
 //Cascade delete
 tweetSchema.pre('remove', async function(next) {
     const tweet = this;
-    await Retweet.deleteMany({tweet: tweet._id});
-    await Replie.deleteMany({tweet: tweet._id});
+    await Retweet.deleteMany({ tweet: tweet._id });
+    await Replie.deleteMany({ tweet: tweet._id });
+    await Like.deleteMany({ tweet: tweet_.id });
     next();
 });
 
