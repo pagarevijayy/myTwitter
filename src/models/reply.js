@@ -23,8 +23,14 @@ const replySchema = new Schema({
         type: Number,
         min: 0
     }
-},{
+}, {
     timestamps: true
+});
+
+replySchema.pre('remove', async function(next) {
+    const reply = this;
+    await Like.deleteMany({ reply: reply._id });
+    next();
 });
 
 const Replie = mongoose.model('Replie', replySchema);
