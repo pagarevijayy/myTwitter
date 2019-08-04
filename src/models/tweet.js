@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Retweet = require('./retweet');
 const Replie = require('./reply');
+const Like = require('./like');
 
 
 const Schema = mongoose.Schema;
@@ -20,7 +21,7 @@ const tweetSchema = new Schema({
         required: true,
         maxlength: 280
     },
-    hashtags:[{
+    hashtags: [{
         type: String
     }],
     likeCount: {
@@ -41,11 +42,14 @@ const tweetSchema = new Schema({
 
 //Cascade delete
 tweetSchema.pre('remove', async function(next) {
+
     const tweet = this;
+
     await Retweet.deleteMany({ tweet: tweet._id });
     await Replie.deleteMany({ tweet: tweet._id });
-    await Like.deleteMany({ tweet: tweet_.id });
+    await Like.deleteMany({ tweet: tweet._id });
     next();
+
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);
