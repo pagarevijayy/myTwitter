@@ -3,11 +3,17 @@
     font: #14171A;
 }
 
+/* Signup Page */
 #sign-up-left {
     background: url("../img/Twitter\ left\ side\ logo@2x.png") no-repeat center/cover;
-    height: 100vh;
     color: #FFFFFF;
 }
+
+.bird-img-sm{
+    height: 55px;;
+}
+
+/* Utilities */
 
 .container-2 {
     margin-top: 30vh;
@@ -15,6 +21,26 @@
     text-align: left;
 }
 
-.signup-img{
-    height: 55px;;
+.full-height{
+    height: 100vh;
+}
+
+.nav-link:hover{
+    background-color: #e3f2fd;
+}
+
+.scale-on-hover{
+    transition: transform .2s ease-in-out;
+}
+
+.scale-on-hover:hover{
+    transform: scale(1.02);
+}
+
+.link-rm-defaults{
+    text-decoration: none;
+}
+
+.link-rm-defaults:hover{
+    text-decoration: none;
 }

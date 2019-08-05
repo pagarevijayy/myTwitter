@@ -1,18 +1,30 @@
 const express = require('express');
+const path = require('path');
+const hbs = require('hbs');
 require('./db/mongoose');
-const userRouter = require('./routers/user');
 
+const userRouter = require('./routers/user');
 const tweetRouter = require('./routers/tweet');
 
 const app = express();
-
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
+//Setup handlebars engine and view location
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '../views/public'));
+hbs.registerPartials(path.join(__dirname, '../views/partials'));
 
+//Setup static directory to serve
+app.use(express.static(path.join(__dirname, '../views/public')));
+
+app.use(express.json());
 app.use(userRouter);
 app.use(tweetRouter);
 
+//Root route
+app.get("", (req, res) => {
+    res.render('index');
+});
 
 //Server connection
 app.listen(port, () => {
