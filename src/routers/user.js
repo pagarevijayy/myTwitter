@@ -4,6 +4,8 @@ const sharp = require('sharp')
 
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const utils = require('../utils/utils');
+
 
 const router = new express.Router();
 
@@ -54,27 +56,50 @@ router.get('/:id/avatar', async (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-    const user = new User(req.body);
+
+    const allowedFields = ['name', 'avatar', 'handle', 'email', 'password', 'DOB', 'bio'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
+
+        const user = new User(req.body);
+
         await user.save();
+
         const token = await user.generateAuthToken();
+
         res.status(201).send({ user, token });
+
     } catch (e) {
         res.status(400).send(e);
     }
+
 });
 
 router.post('/login', async (req, res) => {
+
+    const allowedFields = ['email', 'password'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
+
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
         res.send({ user, token });
+
     } catch (e) {
         res.status(400).send();
     }
 });
 
 router.post('/logout', auth, async (req, res) => {
+
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
@@ -92,14 +117,11 @@ router.get('/profile', auth, async (req, res) => {
 });
 
 router.patch('/profile', auth, async (req, res) => {
-    const updates = Object.keys(req.body);
-    const allowedUpdates = ['name', 'handle', 'email', 'password', 'DOB', 'bio'];
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-    if (!isValidOperation) {
-        return res.status(400).send({
-            error: 'Invalid updates!'
-        });
+    const allowedFields = ['name', 'handle', 'email', 'password', 'DOB', 'bio'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
     }
 
     try {
@@ -142,37 +164,73 @@ router.delete('/profile', auth, async (req, res) => {
 
 router.post('/friendships', auth, async (req, res) => {
 
+    const allowedFields = ['user', 'follow'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
 
-        const initiatorID = req.user._id.toString();
-        const receiverID = req.body.user;
+        const initiatorId = req.user._id.toString();
+        const receiverId = req.body.user;
 
-        const followedUser = await User.findOne({ _id: receiverID });
+        const follow = req.body.follow;
 
-        if (initiatorID in followedUser.followers) {
+        const isFollow = await utils.isFollow(initiatorId, receiverId);
 
-            delete followedUser.followers[initiatorID];
-            delete req.user.following[receiverID];
+        if (!isFollow) return res.status(400).send('Invalid! User does not exist!');
 
-            followedUser.markModified('followers');
-            req.user.markModified('following');
+        if (follow && isFollow.follows) return res.status(400).send('Invalid! Already follows!');
 
-            await followedUser.save();
-            await req.user.save();
+        if (!follow && !isFollow.follows) return res.status(400).send('Invalid! Already unfollows!');
 
-            return res.send('Unfollowed!');
+        const initiator = req.user;
+        const receiver = isFollow.receiver;
+
+        if (follow) {
+
+            initiator.following[receiverId] = receiverId;
+            receiver.followers[initiatorId] = initiatorId;
+
+            initiator.markModified('following');
+            receiver.markModified('followers');
+
+            await initiator.save();
+            await receiver.save();
+
+            return res.send('followed!');
         }
 
-        followedUser.followers[initiatorID] = initiatorID;
-        req.user.following[receiverID] = receiverID;
+        delete initiator.following[receiverId];
+        delete receiver.followers[initiatorId];
 
-        followedUser.markModified('followers');
-        req.user.markModified('following');
+        initiator.markModified('following');
+        receiver.markModified('followers');
 
-        await followedUser.save();
-        await req.user.save();
+        await initiator.save();
+        await receiver.save();
 
-        res.send('followed!');
+        res.send('unfollowed!');
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+    }
+
+});
+
+router.get('/follows/:user', auth, async (req, res) => {
+
+    try {
+
+        const isFollow = await utils.isFollow(req.user._id.toString(), req.params.user);
+
+        if (isFollow) {
+            return res.send({ follows: isFollow.follows });
+        }
+
+        res.status(400).send('Invalid! User does not exist!');
 
     } catch (e) {
         console.log(e);

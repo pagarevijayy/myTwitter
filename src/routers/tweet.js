@@ -67,34 +67,59 @@ router.get("/profile", auth, async (req, res) => {
 });
 
 router.post("/tweet", auth, async (req, res) => {
-    const tweet = new Tweet({
-        ...req.body,
-        user: req.user._id,
-        hashtags: extract(req.body.text, { symbol: false, type: '#' })
-    });
+
+    const allowedFields = ['text'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
 
     try {
+
+        const tweet = new Tweet({
+            ...req.body,
+            user: req.user._id,
+            hashtags: extract(req.body.text, { symbol: false, type: '#' })
+        });
+
         await tweet.save();
         res.status(201).send(tweet);
+
     } catch (e) {
         res.status(400).send(e);
     }
 });
 
 router.delete("/tweet", auth, async (req, res) => {
+
+    const allowedFields = ['tweet'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
+
         const tweet = await Tweet.findOne({ _id: req.body.tweet, user: req.user._id });
         if (!tweet) {
             return res.status(400).send();
         }
         await tweet.remove();
         res.send(tweet);
+
     } catch (e) {
         res.status(500).send(e);
     }
 });
 
 router.post("/retweet", auth, async (req, res) => {
+
+    const allowedFields = ['tweet'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
 
         const existingRetweet = await Retweet.findOne({ user: req.user._id, tweet: req.body.tweet });
@@ -121,6 +146,12 @@ router.post("/retweet", auth, async (req, res) => {
 
 router.delete("/retweet", auth, async (req, res) => {
 
+    const allowedFields = ['retweet'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
 
         const retweet = await Retweet.findOne({ _id: req.body.retweet, user: req.user._id });
@@ -144,12 +175,18 @@ router.delete("/retweet", auth, async (req, res) => {
 
 router.post("/reply", auth, async (req, res) => {
 
-    const reply = new Replie({
-        ...req.body,
-        user: req.user._id,
-    });
+    const allowedFields = ['tweet', 'text'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
 
     try {
+
+        const reply = new Replie({
+            ...req.body,
+            user: req.user._id,
+        });
 
         await reply.save();
         await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { replyCount: 1 } });
@@ -162,6 +199,12 @@ router.post("/reply", auth, async (req, res) => {
 });
 
 router.delete("/reply", auth, async (req, res) => {
+
+    const allowedFields = ['reply'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
 
     try {
 
@@ -185,6 +228,14 @@ router.delete("/reply", auth, async (req, res) => {
 });
 
 router.post("/reply/like", auth, async (req, res) => {
+
+    const allowedFields = ['reply'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
+
     try {
         const existingLike = await Like.findOne({ user: req.user._id, reply: req.body.reply });
 
@@ -212,7 +263,14 @@ router.post("/reply/like", auth, async (req, res) => {
 
 router.post("/tweet/like", auth, async (req, res) => {
 
+    const allowedFields = ['tweet'];
+
+    if (!utils.isReqBodyValid(req.body, allowedFields)) {
+        return res.status(400).send('Invalid request body!');
+    }
+
     try {
+
         const existingLike = await Like.findOne({ user: req.user._id, tweet: req.body.tweet });
         if (existingLike) {
             await existingLike.remove();
@@ -231,7 +289,7 @@ router.post("/tweet/like", auth, async (req, res) => {
         }
 
         res.send(tweet);
-        
+
     } catch (e) {
         res.status(500).send(e);
     }
