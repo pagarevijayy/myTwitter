@@ -23,7 +23,7 @@ app.use(tweetRouter);
 
 //Root route
 app.get("", (req, res) => {
-    res.render('home');
+    res.render('index');
 });
 
 //Server connection
