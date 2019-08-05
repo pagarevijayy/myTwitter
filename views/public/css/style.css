@@ -3,6 +3,10 @@
     font: #14171A;
 }
 
+#search:hover{
+    background: #f8f8f8;
+}
+
 /* Signup Page */
 #sign-up-left {
     background: url("../img/Twitter\ left\ side\ logo@2x.png") no-repeat center/cover;
@@ -25,7 +29,7 @@
     height: 100vh;
 }
 
-.nav-link:hover{
+.link-hover:hover{
     background-color: #e3f2fd;
 }
 
@@ -44,3 +48,4 @@
 .link-rm-defaults:hover{
     text-decoration: none;
 }
+
