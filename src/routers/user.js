@@ -88,7 +88,7 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-
+      
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
         res.send({ user, token });
@@ -157,7 +157,6 @@ router.delete('/profile', auth, async (req, res) => {
         res.send();
 
     } catch (e) {
-        console.log(e);
         res.status(500).send();
     }
 });
@@ -214,7 +213,6 @@ router.post('/friendships', auth, async (req, res) => {
         res.send('unfollowed!');
 
     } catch (e) {
-        console.log(e);
         res.status(500).send(e);
     }
 
