@@ -13,8 +13,7 @@ loginForm.addEventListener('submit', (e) => {
         data: JSON.stringify({ email: $('#loginEmail').val(), password: $('#loginPassword').val() }),
         dataType: 'json',
         success: function(data) {
-            console.log(data);
-            //window.location.href = data.redirect;
+            window.location.href = data.redirect;
         },
         error: function(err) {
             alert('Authentication failed. Please provide correct credentials.');

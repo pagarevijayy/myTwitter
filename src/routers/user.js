@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
         res.cookie('authToken', token);
 
         res.send({
-            redirect: '/profile'
+            redirect: '/home'
         });
 
     } catch (e) {
