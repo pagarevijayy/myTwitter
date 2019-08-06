@@ -126,7 +126,6 @@ router.post('/logout', auth, async (req, res) => {
 
 router.get('/profile', auth, async (req, res) => {
     const user = req.user
-    // for tweets and retweets
     try {
         await user.populate([{
              path: 'tweets',
@@ -145,8 +144,6 @@ router.get('/profile', auth, async (req, res) => {
             return 0;
         });
 
-        //tweets and retweets are stored in arr
-        // res.send(arr);
         res.render('myProfile', {
             arr,
             name: user.name,
