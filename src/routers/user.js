@@ -130,7 +130,9 @@ router.get('/profile', auth, async (req, res) => {
     const user = req.user
     // for tweets and retweets
     try {
-        await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
+        await user.populate([{
+             path: 'tweets',
+             }, { path: 'retweets' }]).execPopulate();
 
         let arr = user.tweets;
         const totalTweets = user.tweets.length;
@@ -148,9 +150,11 @@ router.get('/profile', auth, async (req, res) => {
         //tweets and retweets are stored in arr
         // res.send(arr);
         res.render('myProfile', {
+            arr,
             name: user.name,
             handle: user.handle,
             totalTweets,
+            bio: user.bio,
             totalFollowing: user.followingList.length,
             totalFollowers: user.followerList.length
         });
