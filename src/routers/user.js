@@ -71,10 +71,12 @@ router.post('/signup', async (req, res) => {
 
         const token = await user.generateAuthToken();
 
-        res.status(201).send({ user, token });
+        res.cookie('authToken', token);
+
+        res.status(201).send({ redirect: '/home' });
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(400).send();
     }
 
 });
