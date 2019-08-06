@@ -36,8 +36,8 @@ const getTweet = async (userId) => {
 
     const latestTweets = await Tweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        .limit(1)
-        .populate('user', 'name')
+        // .limit(2)
+        .populate('user', 'name handle')
         .lean();
 
     const latestTweet = latestTweets[0];
@@ -55,14 +55,14 @@ const getRetweet = async (userId) => {
 
     const latestRetweets = await Retweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        .limit(1)
-        .populate('user', 'name')
+        // .limit(2)
+        .populate('user', 'name handle')
         .populate({
             path: 'tweet',
             select: 'text',
             populate: {
                 path: 'user',
-                select: 'name'
+                select: 'name handle'
             }
         })
         .lean();
@@ -82,14 +82,14 @@ const getReply = async (userId) => {
 
     const latestReplies = await Replie.find({ user: userId })
         .sort({ createdAt: -1 })
-        .limit(1)
-        .populate('user', 'name')
+        // .limit(2)
+        .populate('user', 'name handle')
         .populate({
             path: 'tweet',
             select: 'text',
             populate: {
                 path: 'user',
-                select: 'name'
+                select: 'name handle'
             }
         })
         .lean();

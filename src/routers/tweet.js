@@ -319,7 +319,7 @@ router.get("/home", auth, async (req, res) => {
 
     try {
 
-        const toSend = [];
+        const arr = [];
 
         for (const userId of req.user.followingList) {
 
@@ -327,13 +327,15 @@ router.get("/home", auth, async (req, res) => {
             const latestRetweet = await utils.getRetweet(userId);
             const latestReply = await utils.getReply(userId);
 
-            if (latestTweet) toSend.push(latestTweet);
-            if (latestRetweet) toSend.push(latestRetweet);
-            if (latestReply) toSend.push(latestReply);
+            if (latestTweet) arr.push(latestTweet);
+            if (latestRetweet) arr.push(latestRetweet);
+            if (latestReply) arr.push(latestReply);
 
         }
-        //res.send(shuffle(toSend));
-        res.render('home');
+        // res.send(shuffle(arr));
+        res.render('home',{
+            arr
+        });
 
     } catch (e) {
         console.log(e);
