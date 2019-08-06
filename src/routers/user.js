@@ -125,7 +125,36 @@ router.post('/logout', auth, async (req, res) => {
 });
 
 router.get('/profile', auth, async (req, res) => {
-    res.send(req.user);
+    const user = req.user
+    // for tweets and retweets
+    try {
+        await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
+
+        let arr = user.tweets;
+        arr = arr.concat(user.retweets);
+
+        arr.sort(function(a, b) {
+            var keyA = new Date(a.createdAt),
+                keyB = new Date(b.createdAt);
+            // Compare the 2 dates
+            if (keyA < keyB) return 1;
+            if (keyA > keyB) return -1;
+            return 0;
+        });
+
+        //tweets and retweets are stored in arr
+        // res.send(arr);
+        res.render('myProfile',{
+            name: user.name,
+            handle: user.handle,
+            totalTweets: user.tweets,
+            totalFollowing: user.followingList.length,
+            totalFollowers: user.followerList.length
+        });
+        arr = [];
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 router.patch('/profile', auth, async (req, res) => {
