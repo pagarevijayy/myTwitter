@@ -1,7 +1,5 @@
 $('#logout').on('click', (e) => {
-
     e.preventDefault();
-
     $.ajax({
         method: 'POST',
         url: '/logout',
@@ -9,12 +7,32 @@ $('#logout').on('click', (e) => {
             'Content-Type': 'application/json'
         },
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             window.location.href = data.redirect;
         },
-        error: function(err) {
+        error: function (err) {
             alert('Logout failed!');
         }
     });
+});
 
+$('#tweetSubmit').on('click', (e) => {
+    e.preventDefault();
+    $.ajax({
+        method: 'POST',
+        url: '/tweet',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({ text: $('#tweetText').val() }),
+        dataType: 'json',
+        success: function (data) {
+            $(function () {
+                $('#tweetModal').modal('toggle');
+            });
+        },
+        error: function (err) {
+            alert('tweet unsuccessful!');
+        }
+    });
 });
