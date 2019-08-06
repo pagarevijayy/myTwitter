@@ -131,6 +131,7 @@ router.get('/profile', auth, async (req, res) => {
         await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
 
         let arr = user.tweets;
+        const totalTweets = user.tweets.length;
         arr = arr.concat(user.retweets);
 
         arr.sort(function(a, b) {
@@ -144,10 +145,10 @@ router.get('/profile', auth, async (req, res) => {
 
         //tweets and retweets are stored in arr
         // res.send(arr);
-        res.render('myProfile',{
+        res.render('myProfile', {
             name: user.name,
             handle: user.handle,
-            totalTweets: user.tweets,
+            totalTweets,
             totalFollowing: user.followingList.length,
             totalFollowers: user.followerList.length
         });
