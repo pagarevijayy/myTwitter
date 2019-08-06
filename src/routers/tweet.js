@@ -46,7 +46,7 @@ router.get("/search", auth, async (req, res) => {
 });
 
 // view profile of any user
-router.get("/:handle", auth, async (req, res) => {
+router.get("/user/:handle", auth, async (req, res) => {
     // for tweets and retweets
     try {
         const user = await User.findOne({handle: req.params.handle });
@@ -57,6 +57,7 @@ router.get("/:handle", auth, async (req, res) => {
         await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
 
         let arr = user.tweets;
+        const totalTweets = user.tweets.length;
         arr = arr.concat(user.retweets);
 
         arr.sort(function(a, b) {
@@ -69,10 +70,12 @@ router.get("/:handle", auth, async (req, res) => {
         });
 
         // tweets and retweets needs to be added
-        res.render('myProfile',{
+        res.render('userProfile',{
+            arr,
             name: user.name,
             handle: user.handle,
-            totalTweets: user.tweets,
+            totalTweets,
+            bio: user.bio,
             totalFollowing: user.followingList.length,
             totalFollowers: user.followerList.length
         });

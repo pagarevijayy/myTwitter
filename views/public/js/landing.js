@@ -14,7 +14,7 @@ loginForm.addEventListener('submit', (e) => {
         dataType: 'json',
         success: function(data) {
             console.log(data);
-            //window.location.href = data.redirect;
+            // window.location.href = data.redirect;
         },
         error: function(err) {
             alert('Authentication failed. Please provide correct credentials.');
