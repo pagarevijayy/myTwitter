@@ -8,24 +8,21 @@
     <!-- Options -->
     <div class="nav flex-column nav-pills mt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <a class="nav-link link-hover mt-2 font-weight-bolder rounded-pill text-body scale-on-hover"
-            id="v-pills-home-tab" href="/home" role="tab" aria-controls="v-pills-home"
-            aria-selected="true">
+            id="v-pills-home-tab" href="/home" role="tab" aria-controls="v-pills-home" aria-selected="true">
             <h5><span><i class="fa fa-twitter"></i></span> Home</h5>
         </a>
         <a class="nav-link link-hover mt-2 font-weight-bolder rounded-pill text-body scale-on-hover"
-            id="v-pills-profile-tab" href="/profile" role="tab" aria-controls="v-pills-profile"
-            aria-selected="false">
+            id="v-pills-profile-tab" href="/profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
             <h5><span><i class="fa fa-user-o"></i></span> Profile</h5>
         </a>
         <a class="nav-link link-hover mt-2 font-weight-bolder rounded-pill text-body scale-on-hover"
-            id="v-pills-bookmarks-tab" href="#v-pills-bookmarks" role="tab"
-            aria-controls="v-pills-bookmarks" aria-selected="false">
+            id="v-pills-bookmarks-tab" href="#v-pills-bookmarks" role="tab" aria-controls="v-pills-bookmarks"
+            aria-selected="false">
             <h5><span><i class="fa fa-bookmark-o"></i></span> Bookmarks</h5>
         </a>
-        <a class="nav-link link-hover mt-2 font-weight-bolder rounded-pill text-body scale-on-hover"
-            id="v-pills-settings-tab" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings"
-            aria-selected="false">
-            <h5><span><i class="fa fa-edit"></i></span> Settings</h5>
+        <a id="logout" class="nav-link link-hover mt-2 font-weight-bolder rounded-pill text-body scale-on-hover"
+            id="v-pills-settings-tab" href="/logout" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+            <h5><span><i class="fa fa-power-off"></i></span> Logout</h5>
         </a>
     </div>
 
@@ -44,8 +41,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="tweet">
-                        <textarea class="form-control border-0 " id="tweetText" rows="5"
-                            placeholder="What's happening?" maxlength="280" autofocus required></textarea>
+                        <textarea class="form-control border-0 " id="tweetText" rows="5" placeholder="What's happening?"
+                            maxlength="280" autofocus required></textarea>
                     </form>
                 </div>
                 <div class="modal-footer">

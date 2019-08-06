@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const hbs = require('hbs');
+const cookieParser = require('cookie-parser');
 require('./db/mongoose');
 
 const userRouter = require('./routers/user');
@@ -15,6 +16,7 @@ app.set('views', path.join(__dirname, '../views/public'));
 hbs.registerPartials(path.join(__dirname, '../views/partials'));
 
 //Setup static directory to serve
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../views/public')));
 
 app.use(express.json());
