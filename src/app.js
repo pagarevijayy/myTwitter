@@ -24,17 +24,8 @@ app.use(userRouter);
 app.use(tweetRouter);
 
 //Root route
-// app.get("", (req, res) => {
-//     res.render('myProfile',{
-//         name: 'Vijay Pagare',
-//         handle: 'pagarevj',
-//         totalTweets: '20',
-//         totalFollowing: '120',
-//         totalFollowers: '12' 
-//     })
-// });
 app.get("", (req, res) => {
-    res.render('home');
+    res.render('index');
 });
 
 //Server connection
