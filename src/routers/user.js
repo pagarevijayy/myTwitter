@@ -1,6 +1,6 @@
 const express = require('express');
-const multer = require('multer')
-const sharp = require('sharp')
+const multer = require('multer');
+const sharp = require('sharp');
 
 const User = require('../models/user');
 const auth = require('../middleware/auth');
@@ -88,10 +88,15 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-      
+
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
-        res.send({ user, token });
+
+        res.cookie('authToken', token);
+
+        res.send({
+            redirect: '/home'
+        });
 
     } catch (e) {
         res.status(400).send();
@@ -101,12 +106,19 @@ router.post('/login', async (req, res) => {
 router.post('/logout', auth, async (req, res) => {
 
     try {
+
         req.user.tokens = req.user.tokens.filter((token) => {
-            return token.token !== req.token
-        })
+            return token.token !== req.token;
+        });
+
         await req.user.save();
 
-        res.send()
+        res.clearCookie('authToken');
+
+        res.send({
+            redirect: "/"
+        });
+
     } catch (e) {
         res.status(500).send();
     }

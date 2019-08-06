@@ -14,6 +14,9 @@ const utils = require('../utils/utils');
 const router = new express.Router();
 
 
+
+
+
 //search - username and hastags
 // GET /search?name=abc%20xyz
 // GET /search?hashtag=xyz
@@ -313,8 +316,8 @@ router.get("/home", auth, async (req, res) => {
             if (latestReply) toSend.push(latestReply);
 
         }
-
-        res.send(shuffle(toSend));
+        //res.send(shuffle(toSend));
+        res.render('home');
 
     } catch (e) {
         console.log(e);
