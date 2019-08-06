@@ -15,11 +15,11 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../views/public'));
 hbs.registerPartials(path.join(__dirname, '../views/partials'));
 
+app.use(express.json());
 //Setup static directory to serve
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../views/public')));
 
-app.use(express.json());
 app.use(userRouter);
 app.use(tweetRouter);
 

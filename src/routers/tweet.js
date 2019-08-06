@@ -49,7 +49,7 @@ router.get("/search", auth, async (req, res) => {
 router.get("/user/:handle", auth, async (req, res) => {
     // for tweets and retweets
     try {
-        const user = await User.findOne({handle: req.params.handle });
+        const user = await User.findOne({ handle: req.params.handle });
         if (!user) {
             return res.status(404).send();
         }
@@ -69,7 +69,6 @@ router.get("/user/:handle", auth, async (req, res) => {
             return 0;
         });
 
-        // tweets and retweets needs to be added
         res.render('userProfile',{
             arr,
             name: user.name,
