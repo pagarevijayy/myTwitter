@@ -1,7 +1,5 @@
 $('#loginForm').on('submit', (e) => {
-
     e.preventDefault();
-
     $.ajax({
         method: 'POST',
         url: '/login',
@@ -21,11 +19,8 @@ $('#loginForm').on('submit', (e) => {
 });
 
 $('#signupForm').on('submit', function(e) {
-
     e.preventDefault();
-
     const signupData = {};
-
     $('#signupForm').serializeArray().forEach(element => {
         signupData[element.name] = element.value;
     });
@@ -45,6 +40,4 @@ $('#signupForm').on('submit', function(e) {
             alert('Signup failed!');
         }
     });
-
-
 });

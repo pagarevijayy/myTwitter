@@ -11,8 +11,8 @@
 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="icon" href="./img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/img/favicon.ico">
     <title>Home / myTwitter</title>
 </head>
 
@@ -31,6 +31,7 @@
                     </a>
                 </div>
                 {{!-- Feed --}}
+                <div id="socketTweets"></div>
                 {{>timeline}}
             </div>
         </div>
@@ -45,8 +46,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="./js/leftpanel.js"></script>
-    <script src="./js/home.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/leftpanel.js"></script>
+    <script src="/js/home.js"></script>
 </body>
 
 </html>

@@ -98,6 +98,8 @@ router.post("/tweet", auth, async (req, res) => {
         const tweet = new Tweet({
             ...req.body,
             user: req.user._id,
+            name: req.user.name,
+            handle: req.user.handle,
             hashtags: extract(req.body.text, { symbol: false, type: '#' })
         });
 
