@@ -13,10 +13,6 @@ const utils = require('../utils/utils');
 
 const router = new express.Router();
 
-
-
-
-
 //search - username and hastags
 // GET /search?name=abc%20xyz
 // GET /search?hashtag=xyz
@@ -69,7 +65,7 @@ router.get("/user/:handle", auth, async (req, res) => {
             return 0;
         });
 
-        res.render('userProfile',{
+        res.render('userProfile', {
             arr,
             name: user.name,
             handle: user.handle,
@@ -319,21 +315,21 @@ router.get("/home", auth, async (req, res) => {
 
     try {
 
-        const arr = [];
+        let arr = [];
 
         for (const userId of req.user.followingList) {
 
-            const latestTweet = await utils.getTweet(userId);
-            const latestRetweet = await utils.getRetweet(userId);
-            const latestReply = await utils.getReply(userId);
+            const latestTweets = await utils.getTweets(userId);
+            const latestRetweets = await utils.getRetweets(userId);
+            const latestRepies = await utils.getReplies(userId);
 
-            if (latestTweet) arr.push(latestTweet);
-            if (latestRetweet) arr.push(latestRetweet);
-            if (latestReply) arr.push(latestReply);
+            if (latestTweets) arr = arr.concat(latestTweets);
+            if (latestRetweets) arr = arr.concat(latestRetweets);
+            if (latestRepies) arr = arr.concat(latestRepies);
 
         }
-        // res.send(shuffle(arr));
-        res.render('home',{
+        //res.send(shuffle(arr));
+        res.render('home', {
             arr
         });
 
