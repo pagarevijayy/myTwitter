@@ -35,8 +35,7 @@ $('#tweetSubmit').on('click', (e) => {
             });
         },
         error: function (err) {
-            console.log('ERROR:', err);
-            // alert('tweet unsuccessful!');
+            alert('tweet unsuccessful!');
         }
     });
 });
@@ -46,7 +45,7 @@ $('#tweetModal').on('hidden.bs.modal', function () {
 })
 
 socket.on('newTweet', (data) => {
-    $('#socketTweets').append(`
+    $('#socketTweets').prepend(`
     <div class="media border-bottom mt-4">
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
