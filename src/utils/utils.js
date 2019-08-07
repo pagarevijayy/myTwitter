@@ -16,8 +16,6 @@ const isReqBodyValid = (body, fields) => {
 
 };
 
-
-
 const isFollow = async (initatorId, receiverId) => {
 
     const receiver = await User.findOne({ _id: receiverId });
@@ -32,30 +30,31 @@ const isFollow = async (initatorId, receiverId) => {
 
 };
 
-const getTweet = async (userId) => {
+const getTweets = async (userId) => {
 
-    const latestTweets = await Tweet.find({ user: userId })
+    const latestRetweets = await Tweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        // .limit(2)
+        .limit(3)
         .populate('user', 'name handle')
         .lean();
 
-    const latestTweet = latestTweets[0];
+    if (latestRetweets.length) {
 
-    if (latestTweet) {
+        latestRetweets.forEach((element) => {
+            element.type = "tweet";
+        });
 
-        latestTweet.type = "tweet";
-        return latestTweet;
+        return latestRetweets;
 
     }
 
 };
 
-const getRetweet = async (userId) => {
+const getRetweets = async (userId) => {
 
     const latestRetweets = await Retweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        // .limit(2)
+        .limit(3)
         .populate('user', 'name handle')
         .populate({
             path: 'tweet',
@@ -67,22 +66,23 @@ const getRetweet = async (userId) => {
         })
         .lean();
 
-    const latestRetweet = latestRetweets[0];
+    if (latestRetweets.length) {
 
-    if (latestRetweet) {
+        latestRetweets.forEach((element) => {
+            element.type = "retweet";
+        });
 
-        latestRetweet.type = "retweet";
-        return latestRetweet;
+        return latestRetweets;
 
     }
 
 };
 
-const getReply = async (userId) => {
+const getReplies = async (userId) => {
 
     const latestReplies = await Replie.find({ user: userId })
         .sort({ createdAt: -1 })
-        // .limit(2)
+        .limit(3)
         .populate('user', 'name handle')
         .populate({
             path: 'tweet',
@@ -94,15 +94,16 @@ const getReply = async (userId) => {
         })
         .lean();
 
-    const latestTweet = latestReplies[0];
+    if (latestReplies.length) {
 
-    if (latestTweet) {
+        latestReplies.forEach((element) => {
+            element.type = "reply";
+        });
 
-        latestTweet.type = "reply";
-        return latestTweet;
+        return latestReplies;
 
     }
 
 };
 
-module.exports = { isReqBodyValid, isFollow, getTweet, getRetweet, getReply };
+module.exports = { isReqBodyValid, isFollow, getTweets, getRetweets, getReplies };
