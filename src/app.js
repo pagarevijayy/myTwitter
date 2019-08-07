@@ -42,6 +42,6 @@ server.listen(port, () => {
 io.on('connection', (socket) => {
     console.log("new websocket connection!");
     socket.on('tweet', (data) => {
-        io.emit('newTweet',data);
+        socket.broadcast.emit('newTweet',data);
     });
 });

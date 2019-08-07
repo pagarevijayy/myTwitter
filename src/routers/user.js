@@ -3,6 +3,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 
 const User = require('../models/user');
+const Tweet = require('../models/tweet');
 const auth = require('../middleware/auth');
 const utils = require('../utils/utils');
 
@@ -126,6 +127,14 @@ router.post('/logout', auth, async (req, res) => {
     }
 });
 
+router.get('/profileDetails',auth, async(req, res) => {
+    try{
+        res.send(req.user)
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 router.get('/profile', auth, async (req, res) => {
     const user = req.user
     try {
@@ -162,7 +171,6 @@ router.get('/profile', auth, async (req, res) => {
 });
 
 router.patch('/profile', auth, async (req, res) => {
-
     const allowedFields = ['name', 'handle', 'email', 'password', 'DOB', 'bio'];
 
     if (!utils.isReqBodyValid(req.body, allowedFields)) {
@@ -170,10 +178,13 @@ router.patch('/profile', auth, async (req, res) => {
     }
 
     try {
+        const updates = Object.keys(req.body);
         updates.forEach((update) => req.user[update] = req.body[update]);
+        await Tweet.updateMany({user: req.user._id}, {$set: {handle: req.user.handle, name: req.user.name}});
         await req.user.save();
         res.send(req.user);
     } catch (e) {
+        console.log(e);
         res.status(400).send(e);
     }
 });
