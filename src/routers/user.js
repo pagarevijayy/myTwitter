@@ -139,8 +139,8 @@ router.get('/profile', auth, async (req, res) => {
     const user = req.user
     try {
         await user.populate([{
-             path: 'tweets',
-             }, { path: 'retweets' }]).execPopulate();
+            path: 'tweets',
+        }, { path: 'retweets' }]).execPopulate();
 
         let arr = user.tweets;
         const totalTweets = user.tweets.length;
@@ -164,7 +164,7 @@ router.get('/profile', auth, async (req, res) => {
             totalFollowing: user.followingList.length,
             totalFollowers: user.followerList.length
         });
-        arr = [];
+
     } catch (e) {
         res.status(500).send(e);
     }
@@ -217,9 +217,60 @@ router.delete('/profile', auth, async (req, res) => {
     }
 });
 
+// view profile of any user
+router.get("/user/:handle", auth, async (req, res) => {
+    // for tweets and retweets
+    try {
+
+        const currentUserId = req.user._id.toString();
+
+        const isFollow = await utils.isFollow(currentUserId, req.params.handle);
+
+        if (!isFollow) {
+            return res.status(404).send('This user account doesn\'t exist');
+        }
+
+        const user = isFollow.receiver;
+
+        await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
+
+        let arr = user.tweets;
+        const totalTweets = user.tweets.length;
+        arr = arr.concat(user.retweets);
+
+        arr.sort(function(a, b) {
+            var keyA = new Date(a.createdAt),
+                keyB = new Date(b.createdAt);
+            // Compare the 2 dates
+            if (keyA < keyB) return 1;
+            if (keyA > keyB) return -1;
+            return 0;
+        });
+
+        res.render('userProfile', {
+            arr,
+            name: user.name,
+            handle: user.handle,
+            follows: isFollow.follows,
+            totalTweets,
+            bio: user.bio,
+            totalFollowing: user.followingList.length,
+            totalFollowers: user.followerList.length
+        });
+
+        arr = [];
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+
+
+
+
 router.post('/friendships', auth, async (req, res) => {
 
-    const allowedFields = ['user', 'follow'];
+    const allowedFields = ['handle', 'follow'];
 
     if (!utils.isReqBodyValid(req.body, allowedFields)) {
         return res.status(400).send('Invalid request body!');
@@ -228,11 +279,11 @@ router.post('/friendships', auth, async (req, res) => {
     try {
 
         const initiatorId = req.user._id.toString();
-        const receiverId = req.body.user;
+        const receiverHandle = req.body.handle;
 
         const follow = req.body.follow;
 
-        const isFollow = await utils.isFollow(initiatorId, receiverId);
+        const isFollow = await utils.isFollow(initiatorId, receiverHandle);
 
         if (!isFollow) return res.status(400).send('Invalid! User does not exist!');
 
@@ -242,6 +293,7 @@ router.post('/friendships', auth, async (req, res) => {
 
         const initiator = req.user;
         const receiver = isFollow.receiver;
+        const receiverId = receiver._id.toString();
 
         if (follow) {
 

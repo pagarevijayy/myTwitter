@@ -41,46 +41,6 @@ router.get("/search", auth, async (req, res) => {
     }
 });
 
-// view profile of any user
-router.get("/user/:handle", auth, async (req, res) => {
-    // for tweets and retweets
-    try {
-        const user = await User.findOne({ handle: req.params.handle });
-        if (!user) {
-            return res.status(404).send();
-        }
-
-        await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
-
-        let arr = user.tweets;
-        const totalTweets = user.tweets.length;
-        arr = arr.concat(user.retweets);
-
-        arr.sort(function(a, b) {
-            var keyA = new Date(a.createdAt),
-                keyB = new Date(b.createdAt);
-            // Compare the 2 dates
-            if (keyA < keyB) return 1;
-            if (keyA > keyB) return -1;
-            return 0;
-        });
-
-        res.render('userProfile', {
-            arr,
-            name: user.name,
-            handle: user.handle,
-            totalTweets,
-            bio: user.bio,
-            totalFollowing: user.followingList.length,
-            totalFollowers: user.followerList.length
-        });
-
-        arr = [];
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
-
 router.post("/tweet", auth, async (req, res) => {
 
     const allowedFields = ['text'];

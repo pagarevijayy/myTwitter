@@ -21,13 +21,20 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../views/public'));
 hbs.registerPartials(path.join(__dirname, '../views/partials'));
 
+
+app.use(function(req, res, next) {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
 app.use(express.json());
+
 //Setup static directory to serve
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../views/public')));
 
 app.use(userRouter);
 app.use(tweetRouter);
+
 
 //Root route
 app.get("", (req, res) => {
@@ -43,5 +50,6 @@ io.on('connection', (socket) => {
     console.log("new websocket connection!");
     socket.on('tweet', (data) => {
         socket.broadcast.emit('newTweet',data);
+
     });
 });
