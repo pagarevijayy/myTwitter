@@ -16,9 +16,9 @@ const isReqBodyValid = (body, fields) => {
 
 };
 
-const isFollow = async (initatorId, receiverId) => {
+const isFollow = async (initatorId, receiverHandle) => {
 
-    const receiver = await User.findOne({ _id: receiverId });
+    const receiver = await User.findOne({ handle: receiverHandle });
 
     if (receiver) {
 

@@ -9,10 +9,10 @@ $('#logout').on('click', (e) => {
             'Content-Type': 'application/json'
         },
         dataType: 'json',
-        success: function (data) {
+        success: function(data) {
             window.location.href = data.redirect;
         },
-        error: function (err) {
+        error: function(err) {
             alert('Logout failed!');
         }
     });
@@ -28,19 +28,20 @@ $('#tweetSubmit').on('click', (e) => {
         },
         data: JSON.stringify({ text: $('#tweetText').val() }),
         dataType: 'json',
-        success: function (data) {
-            $(function () {
+        success: function(data) {
+            $(function() {
                 $('#tweetModal').modal('toggle');
-                socket.emit('tweet',data)
+                socket.emit('tweet', data);
             });
         },
+
         error: function (err) {
             alert('tweet unsuccessful!');
         }
     });
 });
 
-$('#tweetModal').on('hidden.bs.modal', function () {
+$('#tweetModal').on('hidden.bs.modal', function() {
     $('#tweet').trigger('reset');
 })
 
@@ -78,5 +79,5 @@ socket.on('newTweet', (data) => {
                 </a>
             </div>
         </div>
-    </div>`) 
+    </div>`)
 })
