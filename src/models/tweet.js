@@ -16,6 +16,20 @@ const tweetSchema = new Schema({
         required: true,
         ref: 'User'
     },
+    name: {
+        type: String,
+        trim: true,
+        required: true,
+        maxlength: 50
+    },
+    handle: {
+        type: String,
+        lowercase: true,
+        trim: true,
+        unique: true,
+        required: true,
+        maxlength: 30
+    },
     text: {
         type: String,
         required: true,
