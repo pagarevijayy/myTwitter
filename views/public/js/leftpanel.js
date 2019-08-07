@@ -35,11 +35,15 @@ $('#tweetSubmit').on('click', (e) => {
             });
         },
         error: function (err) {
-
-            alert('tweet unsuccessful!');
+            console.log('ERROR:', err);
+            // alert('tweet unsuccessful!');
         }
     });
 });
+
+$('#tweetModal').on('hidden.bs.modal', function () {
+    $('#tweet').trigger('reset');
+})
 
 socket.on('newTweet', (data) => {
     $('#socketTweets').append(`
