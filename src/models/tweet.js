@@ -26,7 +26,6 @@ const tweetSchema = new Schema({
         type: String,
         lowercase: true,
         trim: true,
-        unique: true,
         required: true,
         maxlength: 30
     },
