@@ -48,19 +48,32 @@
                             height="100px" width="100px" class="rounded-circle float-left mr-3" alt="profile picture">
                         <h1 class="display-4"> {{name}} </h1>
                         <span class="text-muted pl-1">@{{handle}}</span>
-                        <a class="btn btn-sm btn-outline-primary ml-4 rounded-pill" href="#" role="button">Follow</a>
+                        {{#if follows}}
+                        <a id="following" class="btn btn-sm btn-primary ml-4 rounded-pill" href="#"
+                            data-handle="{{handle}}" role="button">Following</a>
+                        <a id="follow" class="btn btn-sm btn-outline-primary ml-4 rounded-pill" href="#"
+                            data-handle="{{handle}}" role="button" style="display: none">Follow</a>
+                        {{else}}
+                        <a id="following" class="btn btn-sm btn-primary ml-4 rounded-pill" href="#"
+                            data-handle="{{handle}}" role="button" style="display: none">Following</a>
+                        <a id="follow" class="btn btn-sm btn-outline-primary ml-4 rounded-pill" href="#"
+                            data-handle="{{handle}}" role="button">Follow</a>
+                        {{/if}}
                     </div>
                     <div class="clearfix mb-2"></div>
 
                     {{!-- Profile details body --}}
                     <div>
                         <p class="lead border-bottom pb-3 mb-0">{{bio}}<br>
-                            <span class="text-muted small pl-1"> <b class="text-body">{{totalFollowing}}</b> following</span>
-                            <span class="text-muted small pl-1"> <b class="text-body">{{totalFollowers}}</b> followers</span>
+                            <span class="text-muted small pl-1"> <b class="text-body">{{totalFollowing}}</b>
+                                following</span>
+                            <span class="text-muted small pl-1"> <b class="text-body">{{totalFollowers}}</b>
+                                followers</span>
                         </p>
                         <div>
                             <div class="my-2 d-flex justify-content-center">
-                                    <a class="link-rm-defaults font-weight-normal text-monospace text-body" href="#">Tweets and Retweets</a>
+                                <a class="link-rm-defaults font-weight-normal text-monospace text-body" href="#">Tweets
+                                    and Retweets</a>
                             </div>
                         </div>
                     </div>
@@ -83,7 +96,8 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/leftpanel.js"></script>  
+    <script src="/js/leftpanel.js"></script>
+    <script src="/js/profile.js"></script>
 </body>
 
 </html>
