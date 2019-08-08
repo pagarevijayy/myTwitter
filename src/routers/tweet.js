@@ -290,6 +290,14 @@ router.get("/home", auth, async (req, res) => {
             if (latestRepies) arr = arr.concat(latestRepies);
 
         }
+
+        if(arr.length === 0) {
+            return res.render('home', {
+                message: 'Try following someone to get the feed.'
+            });
+    
+        }
+
         //res.send(shuffle(arr));
         res.render('home', {
             arr

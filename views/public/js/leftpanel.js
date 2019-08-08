@@ -9,28 +9,28 @@ $('#logout').on('click', (e) => {
             'Content-Type': 'application/json'
         },
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             window.location.href = data.redirect;
         },
-        error: function(err) {
+        error: function (err) {
             alert('Logout failed!');
         }
     });
 });
 
-$('#tweetSubmit').on('click', (e) => {
-    e.preventDefault();
+const submitTweet = (src) => {
     $.ajax({
         method: 'POST',
         url: '/tweet',
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify({ text: $('#tweetText').val() }),
+        data: JSON.stringify(src),
         dataType: 'json',
-        success: function(data) {
-            $(function() {
+        success: function (data) {
+            $(function () {
                 $('#tweetModal').modal('toggle');
+                location.reload();
                 socket.emit('tweet', data);
             });
         },
@@ -39,11 +39,25 @@ $('#tweetSubmit').on('click', (e) => {
             alert('tweet unsuccessful!');
         }
     });
+}
+
+$('#tweetSubmit').on('click', (e) => {
+    e.preventDefault();
+    submitTweet({
+        text: $('#tweetText').val()
+    });
 });
 
-$('#tweetModal').on('hidden.bs.modal', function() {
+$('#tweetModal').on('hidden.bs.modal', function () {
     $('#tweet').trigger('reset');
 })
+
+$('#tweetSubmitHome').on('click', (e) => {
+    e.preventDefault();
+    submitTweet({
+        text: $('#tweetTextHome').val()
+    });
+});
 
 socket.on('newTweet', (data) => {
     $('#socketTweets').prepend(`
