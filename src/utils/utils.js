@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Retweet = require('../models/retweet');
@@ -106,4 +107,42 @@ const getReplies = async (userId) => {
 
 };
 
-module.exports = { isReqBodyValid, isFollow, getTweets, getRetweets, getReplies };
+const getAuthorizedUser = async (token) => {
+
+    const decoded = jwt.verify(token, 'thisismytwitter');
+
+    const user = await User.findOne({
+        _id: decoded._id,
+        'tokens.token': token
+    });
+
+    if (!user) {
+        throw new Error();
+    }
+
+    return user;
+};
+
+// const fetchTimeline = async (user) => {
+
+//     await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
+
+//     let arr = user.tweets;
+//     const totalTweets = user.tweets.length;
+//     arr = arr.concat(user.retweets);
+
+//     arr.sort(function(a, b) {
+//         var keyA = new Date(a.createdAt),
+//             keyB = new Date(b.createdAt);
+//         // Compare the 2 dates
+//         if (keyA < keyB) return 1;
+//         if (keyA > keyB) return -1;
+//         return 0;
+//     });
+
+//     return arr
+
+// };
+
+
+module.exports = { isReqBodyValid, isFollow, getTweets, getRetweets, getReplies, getAuthorizedUser };

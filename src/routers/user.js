@@ -240,6 +240,12 @@ router.get("/user/:handle", auth, async (req, res) => {
     // for tweets and retweets
     try {
 
+        // let profileToRender = undefined;
+
+        // if (req.cookies.authToken) {
+        //     profileToRender = req.user.handle === req.params.handle ?
+        // }
+
         const currentUserId = req.user._id.toString();
 
         const isFollow = await utils.isFollow(currentUserId, req.params.handle);
@@ -292,9 +298,6 @@ router.get("/user/:handle", auth, async (req, res) => {
         res.status(500).send(e);
     }
 });
-
-
-
 
 
 router.post('/friendships', auth, async (req, res) => {
@@ -351,31 +354,24 @@ router.post('/friendships', auth, async (req, res) => {
 
 });
 
-router.get('/follows/:user', auth, async (req, res) => {
+router.get('/user/:handle/followers', auth, async (req, res) => {
 
     try {
 
-        const isFollow = await utils.isFollow(req.user._id.toString(), req.params.user);
+        let user = undefined;
 
-        if (isFollow) {
-            return res.send({ follows: isFollow.follows });
+        if (req.user.handle !== req.params.handle) {
+            user = await User.findOne({ handle: req.params.handle });
+        } else {
+            user = req.user;
         }
 
-        res.status(400).send('Invalid! User does not exist!');
+        const followers = await User.find({ _id: { $in: user.followerList } }, 'name handle bio').lean();
 
-    } catch (e) {
-        console.log(e);
-        res.status(500).send(e);
-    }
-
-});
-
-router.get('/followers', auth, async (req, res) => {
-
-    try {
-
-        const followers = await User.find({ _id: { $in: req.user.followerList } }, 'name bio');
-        res.send(followers);
+        res.render('follow', {
+            arr: followers,
+            type: 'followers'
+        });
 
     } catch (e) {
         res.status(500).send();
@@ -383,12 +379,25 @@ router.get('/followers', auth, async (req, res) => {
 
 });
 
-router.get('/following', auth, async (req, res) => {
+router.get('/user/:handle/following', auth, async (req, res) => {
 
     try {
 
-        const following = await User.find({ _id: { $in: req.user.followingList } }, 'name bio');
-        res.send(following);
+        let user = undefined;
+
+        if (req.user.handle !== req.params.handle) {
+            user = await User.findOne({ handle: req.params.handle });
+        } else {
+            user = req.user;
+        }
+
+        const following = await User.find({ _id: { $in: user.followingList } }, 'name handle bio');
+
+
+        res.render('follow', {
+            arr: following,
+            type: 'following'
+        });
 
     } catch (e) {
         res.status(500).send();

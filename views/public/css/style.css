@@ -3,7 +3,7 @@
     font: #14171A;
 }
 
-#search:hover{
+#search:hover {
     background: #f8f8f8;
 }
 
@@ -13,8 +13,9 @@
     color: #FFFFFF;
 }
 
-.bird-img-sm{
-    height: 55px;;
+.bird-img-sm {
+    height: 55px;
+    ;
 }
 
 /* Utilities */
@@ -25,31 +26,39 @@
     text-align: left;
 }
 
-.full-height{
+.full-height {
     height: 100vh;
 }
 
-.link-hover:hover{
+.link-hover:hover {
     background-color: #e3f2fd;
 }
 
-.scale-on-hover{
+.scale-on-hover {
     transition: transform .2s ease-in-out;
 }
 
-.scale-on-hover:hover{
+.scale-on-hover:hover {
     transform: scale(1.02);
 }
 
-.link-rm-defaults{
+.link-rm-defaults {
     text-decoration: none;
 }
 
-.link-rm-defaults:hover{
+.link-rm-defaults:hover {
     text-decoration: none;
 }
 
-.bg-white{
+.bg-white {
     background: white;
 }
 
+.user:hover {
+    background-color: #F5F8FA;
+    cursor: pointer;
+}
+
+/* .follow-list {
+    cursor: pointer;
+} */
