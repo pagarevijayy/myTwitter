@@ -58,7 +58,7 @@ router.get('/:id/avatar', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
 
-    const allowedFields = ['name', 'avatar', 'handle', 'email', 'password', 'DOB', 'bio'];
+    const allowedFields = ['name','handle', 'email', 'password'];
 
     if (!utils.isReqBodyValid(req.body, allowedFields)) {
         return res.status(400).send('Invalid request body!');
@@ -96,7 +96,8 @@ router.post('/login', async (req, res) => {
         const token = await user.generateAuthToken();
 
         res.cookie('authToken', token);
-
+        res.cookie('user_id', user._id.toString());
+        
         res.send({
             redirect: '/home'
         });
