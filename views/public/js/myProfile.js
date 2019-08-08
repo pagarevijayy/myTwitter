@@ -37,7 +37,7 @@ $('#saveChanges').on('click', (e) => {
         data: JSON.stringify(profileData),
         dataType: 'json',
         success: function (data) {
-            window.location.href = '/profile';
+            location.reload();
         },
         error: function (err) {
             alert('Changes could not be saved!');

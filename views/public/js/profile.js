@@ -9,23 +9,25 @@ const sendFriendshipRequest = (followData) => {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify(followData),
-        success: function(data) {
+        success: function (data) {
 
             if (followData.follow) {
 
                 $('#follow').css('display', 'none');
                 $('#following').css('display', 'inline');
+                location.reload();
 
 
             } else {
 
                 $('#following').css('display', 'none');
                 $('#follow').css('display', 'inline');
+                location.reload();
 
             }
 
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err);
             alert(`${action} failed!`);
         }
@@ -34,7 +36,7 @@ const sendFriendshipRequest = (followData) => {
 
 };
 
-$('#following').on('click', function(e) {
+$('#following').on('click', function (e) {
 
     e.preventDefault();
 
@@ -45,7 +47,7 @@ $('#following').on('click', function(e) {
 
 });
 
-$('#follow').on('click', function(e) {
+$('#follow').on('click', function (e) {
 
     e.preventDefault();
 
