@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const utils = require('../utils/utils');
 
 const auth = async (req, res, next) => {
     try {
@@ -10,16 +9,7 @@ const auth = async (req, res, next) => {
             throw new Error();
         }
 
-        const decoded = jwt.verify(token, 'thisismytwitter');
-
-        const user = await User.findOne({
-            _id: decoded._id,
-            'tokens.token': token
-        });
-
-        if (!user) {
-            throw new Error();
-        }
+        const user = await utils.getAuthorizedUser(token);
 
         req.token = token;
         req.user = user;
