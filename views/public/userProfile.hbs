@@ -27,9 +27,11 @@
             {{!-- Right panel --}}
             <div class="col-9">
                 {{!-- top notation --}}
+
                 <div class="mt-3 border-bottom sticky-top containe bg-white">
                     <a class="link-rm-defaults font-weight-bolder text-body d-inline-block" href="#"
                         onclick="history.back()">
+
                         <span class="text-info">
                             <h5><i class="fa fa-chevron-left"></i></h5>
                         </span>
@@ -81,6 +83,7 @@
                 </div>
 
                 {{!-- Tweets and Retweets --}}
+                {{>noFollowing}}
                 {{>userTimeline}}
             </div>
         </div>
