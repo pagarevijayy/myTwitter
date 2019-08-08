@@ -13,21 +13,21 @@ const utils = require('../utils/utils');
 
 const router = new express.Router();
 
-//search - username and hastags
-// GET /search?name=abc%20xyz
+//search - handle and hastags
+// GET /search?handle=abc%20xyz
 // GET /search?hashtag=xyz
 router.get("/search", auth, async (req, res) => {
     try {
-        const searchName = await User.find({ name: req.query.name });
+        const searchHandle = await User.findOne({ handle: req.query.handle });
 
         const searchHashtag = await Tweet.find({ hashtags: req.query.hashtag });
 
-        if (req.query.name) {
-            if (searchName.length === 0) {
+        if (req.query.handle) {
+            if (searchHandle.length === 0) {
                 return res.status(404).send();
             }
 
-            res.send(searchName);
+            res.send(searchHandle);
         } else {
             if (searchHashtag.length === 0) {
                 return res.status(404).send();
