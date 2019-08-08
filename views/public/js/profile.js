@@ -16,6 +16,7 @@ $('#follow').on('click', function(e) {
         headers: {
             'Content-Type': 'application/json'
         },
+
         data: JSON.stringify(data),
         success: function(data) {
 
@@ -24,6 +25,7 @@ $('#follow').on('click', function(e) {
                 followButton.attr('data-follows', 'false');
                 followButton.html('Follow');
                 followButton.removeClass('btn-primary').addClass('btn-outline-primary');
+                location.reload();
                 return;
 
             }
@@ -31,9 +33,10 @@ $('#follow').on('click', function(e) {
             followButton.attr('data-follows', 'true');
             followButton.html('Following');
             followButton.removeClass('btn-outline-primary').addClass('btn-primary');
+            location.reload();
 
         },
-        error: function(err) {
+        error: function (err) {
             console.log(err);
             alert(`${action} failed!`);
         }

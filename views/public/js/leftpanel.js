@@ -1,5 +1,27 @@
 const socket = io();
 
+$('#search').keypress(function (e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        console.log($('#search').val());
+        $.ajax({
+            method: 'GET',
+            url: `/search?handle=${$('#search').val()}`,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $('#search').trigger('reset');
+                window.location.href = `/user/${data.handle}`;
+            },
+            error: function (err) {
+                alert('This handle does not exist!');
+            }
+        });
+    }
+});
+
+
+
 $('#logout').on('click', (e) => {
     e.preventDefault();
     $.ajax({
@@ -9,28 +31,28 @@ $('#logout').on('click', (e) => {
             'Content-Type': 'application/json'
         },
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             window.location.href = data.redirect;
         },
-        error: function(err) {
+        error: function (err) {
             alert('Logout failed!');
         }
     });
 });
 
-$('#tweetSubmit').on('click', (e) => {
-    e.preventDefault();
+const submitTweet = (src) => {
     $.ajax({
         method: 'POST',
         url: '/tweet',
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify({ text: $('#tweetText').val() }),
+        data: JSON.stringify(src),
         dataType: 'json',
-        success: function(data) {
-            $(function() {
+        success: function (data) {
+            $(function () {
                 $('#tweetModal').modal('toggle');
+                location.reload();
                 socket.emit('tweet', data);
             });
         },
@@ -39,11 +61,25 @@ $('#tweetSubmit').on('click', (e) => {
             alert('tweet unsuccessful!');
         }
     });
+}
+
+$('#tweetSubmit').on('click', (e) => {
+    e.preventDefault();
+    submitTweet({
+        text: $('#tweetText').val()
+    });
 });
 
-$('#tweetModal').on('hidden.bs.modal', function() {
+$('#tweetModal').on('hidden.bs.modal', function () {
     $('#tweet').trigger('reset');
 })
+
+$('#tweetSubmitHome').on('click', (e) => {
+    e.preventDefault();
+    submitTweet({
+        text: $('#tweetTextHome').val()
+    });
+});
 
 socket.on('newTweet', (data) => {
     $('#socketTweets').prepend(`

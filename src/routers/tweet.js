@@ -13,21 +13,21 @@ const utils = require('../utils/utils');
 
 const router = new express.Router();
 
-//search - username and hastags
-// GET /search?name=abc%20xyz
+//search - handle and hastags
+// GET /search?handle=abc%20xyz
 // GET /search?hashtag=xyz
 router.get("/search", auth, async (req, res) => {
     try {
-        const searchName = await User.find({ name: req.query.name });
+        const searchHandle = await User.findOne({ handle: req.query.handle });
 
         const searchHashtag = await Tweet.find({ hashtags: req.query.hashtag });
 
-        if (req.query.name) {
-            if (searchName.length === 0) {
+        if (req.query.handle) {
+            if (searchHandle.length === 0) {
                 return res.status(404).send();
             }
 
-            res.send(searchName);
+            res.send(searchHandle);
         } else {
             if (searchHashtag.length === 0) {
                 return res.status(404).send();
@@ -290,6 +290,14 @@ router.get("/home", auth, async (req, res) => {
             if (latestRepies) arr = arr.concat(latestRepies);
 
         }
+
+        if(arr.length === 0) {
+            return res.render('home', {
+                message: 'Try following someone to get the feed.'
+            });
+    
+        }
+
         //res.send(shuffle(arr));
         res.render('home', {
             arr

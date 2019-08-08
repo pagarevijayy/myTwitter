@@ -31,6 +31,15 @@
                     </a>
                 </div>
                 {{!-- Feed --}}
+                <div class="container mt-2 border-bottom">
+                    <form id="tweetHome">
+                        <textarea id="tweetTextHome" class="form-control" rows="5" placeholder="Tweet something?"
+                            maxlength="280" required></textarea>
+                        <button type="submit" id="tweetSubmitHome"
+                            class="btn btn-primary rounded-pill btn-sm m-2">Tweet</button>
+                    </form>
+                </div>
+                {{>noFollowing}}
                 <div id="socketTweets"></div>
                 {{>timeline}}
             </div>
