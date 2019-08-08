@@ -50,7 +50,6 @@ router.post("/tweet", auth, async (req, res) => {
     }
 
     try {
-
         const tweet = new Tweet({
             ...req.body,
             user: req.user._id,
@@ -60,7 +59,10 @@ router.post("/tweet", auth, async (req, res) => {
         });
 
         await tweet.save();
-        res.status(201).send(tweet);
+
+        const tweetObject = tweet.toObject();
+        tweetObject.followerList = req.user.followerList;
+        res.status(201).send(tweetObject);
 
     } catch (e) {
         res.status(400).send(e);
@@ -293,7 +295,7 @@ router.get("/home", auth, async (req, res) => {
 
         if(arr.length === 0) {
             return res.render('home', {
-                message: 'Try following someone to get the feed.'
+                message: 'Try following someone to get new feed.'
             });
     
         }
