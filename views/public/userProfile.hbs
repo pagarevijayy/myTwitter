@@ -49,15 +49,11 @@
                         <h1 class="display-4"> {{name}} </h1>
                         <span class="text-muted pl-1">@{{handle}}</span>
                         {{#if follows}}
-                        <a id="following" class="btn btn-sm btn-primary ml-4 rounded-pill" href="#"
-                            data-handle="{{handle}}" role="button">Following</a>
-                        <a id="follow" class="btn btn-sm btn-outline-primary ml-4 rounded-pill" href="#"
-                            data-handle="{{handle}}" role="button" style="display: none">Follow</a>
+                        <a id="follow" class="btn btn-sm btn-primary ml-4 rounded-pill" href="#"
+                            data-handle="{{handle}}" data-follows="true" role="button">Following</a>
                         {{else}}
-                        <a id="following" class="btn btn-sm btn-primary ml-4 rounded-pill" href="#"
-                            data-handle="{{handle}}" role="button" style="display: none">Following</a>
                         <a id="follow" class="btn btn-sm btn-outline-primary ml-4 rounded-pill" href="#"
-                            data-handle="{{handle}}" role="button">Follow</a>
+                            data-handle="{{handle}}" data-follows="false" role="button">Follow</a>
                         {{/if}}
                     </div>
                     <div class="clearfix mb-2"></div>
