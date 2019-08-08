@@ -127,8 +127,8 @@ router.post('/logout', auth, async (req, res) => {
     }
 });
 
-router.get('/profileDetails',auth, async(req, res) => {
-    try{
+router.get('/profileDetails', auth, async (req, res) => {
+    try {
         res.send(req.user)
     } catch (e) {
         res.status(500).send(e);
@@ -180,7 +180,7 @@ router.patch('/profile', auth, async (req, res) => {
     try {
         const updates = Object.keys(req.body);
         updates.forEach((update) => req.user[update] = req.body[update]);
-        await Tweet.updateMany({user: req.user._id}, {$set: {handle: req.user.handle, name: req.user.name}});
+        await Tweet.updateMany({ user: req.user._id }, { $set: { handle: req.user.handle, name: req.user.name } });
         await req.user.save();
         res.send(req.user);
     } catch (e) {
@@ -227,7 +227,7 @@ router.get("/user/:handle", auth, async (req, res) => {
         const isFollow = await utils.isFollow(currentUserId, req.params.handle);
 
         if (!isFollow) {
-            return res.status(404).send('This user account doesn\'t exist');
+            return res.status(404).send('This account doesn\'t exist');
         }
 
         const user = isFollow.receiver;
@@ -258,7 +258,6 @@ router.get("/user/:handle", auth, async (req, res) => {
             totalFollowers: user.followerList.length
         });
 
-        arr = [];
     } catch (e) {
         res.status(500).send(e);
     }
@@ -270,7 +269,7 @@ router.get("/user/:handle", auth, async (req, res) => {
 
 router.post('/friendships', auth, async (req, res) => {
 
-    const allowedFields = ['handle', 'follow'];
+    const allowedFields = ['handle'];
 
     if (!utils.isReqBodyValid(req.body, allowedFields)) {
         return res.status(400).send('Invalid request body!');
@@ -281,24 +280,18 @@ router.post('/friendships', auth, async (req, res) => {
         const initiatorId = req.user._id.toString();
         const receiverHandle = req.body.handle;
 
-        const follow = req.body.follow;
-
         const isFollow = await utils.isFollow(initiatorId, receiverHandle);
 
         if (!isFollow) return res.status(400).send('Invalid! User does not exist!');
-
-        if (follow && isFollow.follows) return res.status(400).send('Invalid! Already follows!');
-
-        if (!follow && !isFollow.follows) return res.status(400).send('Invalid! Already unfollows!');
 
         const initiator = req.user;
         const receiver = isFollow.receiver;
         const receiverId = receiver._id.toString();
 
-        if (follow) {
+        if (isFollow.follows) {
 
-            initiator.following[receiverId] = receiverId;
-            receiver.followers[initiatorId] = initiatorId;
+            delete initiator.following[receiverId];
+            delete receiver.followers[initiatorId];
 
             initiator.markModified('following');
             receiver.markModified('followers');
@@ -306,11 +299,12 @@ router.post('/friendships', auth, async (req, res) => {
             await initiator.save();
             await receiver.save();
 
-            return res.send('followed!');
+            return res.send('unfollowed!');
+
         }
 
-        delete initiator.following[receiverId];
-        delete receiver.followers[initiatorId];
+        initiator.following[receiverId] = receiverId;
+        receiver.followers[initiatorId] = initiatorId;
 
         initiator.markModified('following');
         receiver.markModified('followers');
@@ -318,9 +312,10 @@ router.post('/friendships', auth, async (req, res) => {
         await initiator.save();
         await receiver.save();
 
-        res.send('unfollowed!');
+        res.send('followed!');
 
     } catch (e) {
+        console.log(e);
         res.status(500).send(e);
     }
 

@@ -1,6 +1,14 @@
-const sendFriendshipRequest = (followData) => {
+$('#follow').on('click', function(e) {
 
-    const action = followData.follow ? "follow" : "unfollow";
+    e.preventDefault();
+
+    const followButton = $(this);
+
+    const data = { handle: followButton.data('handle') };
+
+    const follows = followButton.attr('data-follows') === 'true' ? true : false;
+
+    const action = follows ? "unfollow" : "follow";
 
     $.ajax({
         method: 'POST',
@@ -8,21 +16,21 @@ const sendFriendshipRequest = (followData) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify(followData),
+        data: JSON.stringify(data),
         success: function(data) {
 
-            if (followData.follow) {
+            if (follows) {
 
-                $('#follow').css('display', 'none');
-                $('#following').css('display', 'inline');
-
-
-            } else {
-
-                $('#following').css('display', 'none');
-                $('#follow').css('display', 'inline');
+                followButton.attr('data-follows', 'false');
+                followButton.html('Follow');
+                followButton.removeClass('btn-primary').addClass('btn-outline-primary');
+                return;
 
             }
+
+            followButton.attr('data-follows', 'true');
+            followButton.html('Following');
+            followButton.removeClass('btn-outline-primary').addClass('btn-primary');
 
         },
         error: function(err) {
@@ -30,28 +38,6 @@ const sendFriendshipRequest = (followData) => {
             alert(`${action} failed!`);
         }
 
-    });
-
-};
-
-$('#following').on('click', function(e) {
-
-    e.preventDefault();
-
-    sendFriendshipRequest({
-        handle: $(this).data('handle'),
-        follow: false
-    });
-
-});
-
-$('#follow').on('click', function(e) {
-
-    e.preventDefault();
-
-    sendFriendshipRequest({
-        handle: $(this).data('handle'),
-        follow: true
     });
 
 });
