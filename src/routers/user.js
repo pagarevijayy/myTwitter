@@ -218,7 +218,7 @@ router.delete('/profile', auth, async (req, res) => {
 });
 
 // view profile of any user
-router.get("/user/:handle", async (req, res) => {
+router.get("/user/:handle", auth, async (req, res) => {
     // for tweets and retweets
     try {
 
