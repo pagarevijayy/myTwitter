@@ -1,5 +1,27 @@
 const socket = io();
 
+$('#search').keypress(function (e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        console.log($('#search').val());
+        $.ajax({
+            method: 'GET',
+            url: `/search?handle=${$('#search').val()}`,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $('#search').trigger('reset');
+                window.location.href = `/user/${data.handle}`;
+            },
+            error: function (err) {
+                alert('This handle does not exist!');
+            }
+        });
+    }
+});
+
+
+
 $('#logout').on('click', (e) => {
     e.preventDefault();
     $.ajax({
