@@ -276,6 +276,7 @@ router.get("/user/:handle", auth, async (req, res) => {
                 message: 'Waiting for their first tweet :)',
                 name: user.name,
                 handle: user.handle,
+                follows: isFollow.follows,
                 totalTweets,
                 bio: user.bio,
                 totalFollowing: user.followingList.length,
