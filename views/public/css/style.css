@@ -59,6 +59,7 @@
     cursor: pointer;
 }
 
+
 @keyframes slideInFromTop {
     0% {
         transform: translateY(-50%);
@@ -72,11 +73,3 @@
 .real-time {
     animation: 0.5s ease-in-out 0s 1 slideInFromTop;
 }
-
-
-
-
-
-/* .follow-list {
-    cursor: pointer;
-} */

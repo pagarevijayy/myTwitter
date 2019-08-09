@@ -84,16 +84,18 @@ $('#tweetSubmitHome').on('click', (e) => {
 socket.on('newTweet', (data) => {
     const found = data.followerList.includes($.cookie('user_id'));
     if (found) {
+        $('#noFollowing').html('');
+        
         $('#socketTweets').prepend(`
     <div class="media border-bottom mt-4 real-time">
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
         <div class="media-body">
-            <h5 class="mt-0 d-inline-flex ">${data.name}</h5>
-            <span class="d-inline-flex text-muted small">
-                <h6 class="font-weight-normal">${data.handle}</h6>
-            </span>
-            <span class="d-inline-flex text-muted small"> | ${data.createdAt}</span>
+                <h5 class="mt-0 d-inline-flex "> <a class="link-rm-defaults text-body" href="/user/${data.handle}">${data.name}</a></h5>
+                <span class="d-inline-flex text-muted small">
+                    <h6 class="font-weight-normal">@${data.handle}</h6>
+                </span>
+                <span class="d-inline-flex text-muted small"> | ${data.createdAt}</span>
             <p class="mb-2">
                 ${data.text}
             </p>
