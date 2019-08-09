@@ -302,7 +302,7 @@ router.get("/home", auth, async (req, res) => {
 
         //res.send(shuffle(arr));
         res.render('home', {
-            arr
+            arr: shuffle(arr)
         });
 
     } catch (e) {

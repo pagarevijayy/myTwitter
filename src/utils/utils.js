@@ -35,7 +35,7 @@ const getTweets = async (userId) => {
 
     const latestRetweets = await Tweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        .limit(3)
+        .limit(4)
         .populate('user', 'name handle')
         .lean();
 
@@ -55,7 +55,7 @@ const getRetweets = async (userId) => {
 
     const latestRetweets = await Retweet.find({ user: userId })
         .sort({ createdAt: -1 })
-        .limit(3)
+        .limit(4)
         .populate('user', 'name handle')
         .populate({
             path: 'tweet',
