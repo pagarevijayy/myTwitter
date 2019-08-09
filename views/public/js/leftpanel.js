@@ -84,6 +84,8 @@ $('#tweetSubmitHome').on('click', (e) => {
 socket.on('newTweet', (data) => {
     const found = data.followerList.includes($.cookie('user_id'));
     if (found) {
+        $('#noFollowing').html('');
+        
         $('#socketTweets').prepend(`
     <div class="media border-bottom mt-4">
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
