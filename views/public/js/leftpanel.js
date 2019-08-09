@@ -1,6 +1,6 @@
 const socket = io();
 
-$('#search').keypress(function (e) {
+$('#search').keypress(function(e) {
     if (e.keyCode == 13) {
         e.preventDefault();
         console.log($('#search').val());
@@ -8,12 +8,12 @@ $('#search').keypress(function (e) {
             method: 'GET',
             url: `/search?handle=${$('#search').val()}`,
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 console.log(data);
                 $('#search').trigger('reset');
                 window.location.href = `/user/${data.handle}`;
             },
-            error: function (err) {
+            error: function(err) {
                 alert('This handle does not exist!');
             }
         });
@@ -31,10 +31,10 @@ $('#logout').on('click', (e) => {
             'Content-Type': 'application/json'
         },
         dataType: 'json',
-        success: function (data) {
+        success: function(data) {
             window.location.href = data.redirect;
         },
-        error: function (err) {
+        error: function(err) {
             alert('Logout failed!');
         }
     });
@@ -49,15 +49,15 @@ const submitTweet = (src) => {
         },
         data: JSON.stringify(src),
         dataType: 'json',
-        success: function (data) {
-            $(function () {
+        success: function(data) {
+            $(function() {
                 $('#tweetModal').modal('toggle');
                 location.reload();
                 socket.emit('tweet', data);
             });
         },
 
-        error: function (err) {
+        error: function(err) {
             alert('tweet unsuccessful!');
         }
     });
@@ -70,7 +70,7 @@ $('#tweetSubmit').on('click', (e) => {
     });
 });
 
-$('#tweetModal').on('hidden.bs.modal', function () {
+$('#tweetModal').on('hidden.bs.modal', function() {
     $('#tweet').trigger('reset');
 })
 
@@ -87,7 +87,7 @@ socket.on('newTweet', (data) => {
         $('#noFollowing').html('');
         
         $('#socketTweets').prepend(`
-    <div class="media border-bottom mt-4">
+    <div class="media border-bottom mt-4 real-time">
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
         <div class="media-body">
