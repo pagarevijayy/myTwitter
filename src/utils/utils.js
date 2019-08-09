@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Retweet = require('../models/retweet');
@@ -144,5 +146,27 @@ const getAuthorizedUser = async (token) => {
 
 // };
 
+const upload = multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error("Please upload an image file."));
+        }
 
-module.exports = { isReqBodyValid, isFollow, getTweets, getRetweets, getReplies, getAuthorizedUser };
+        cb(undefined, true);
+    }
+});
+
+
+
+module.exports = {
+    isReqBodyValid,
+    isFollow,
+    getTweets,
+    getRetweets,
+    getReplies,
+    getAuthorizedUser,
+    upload
+};
