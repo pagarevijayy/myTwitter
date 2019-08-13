@@ -136,9 +136,13 @@ const getProfile = async (req, res) => {
 
     try {
 
-        await user.populate([{
-            path: 'tweets',
-        }, { path: 'retweets' }]).execPopulate();
+        await user.populate([{ path: 'tweets' }, { 
+            path: 'retweets',
+            populate: {
+                path: 'tweet',
+                select: 'text name handle likeCount replyCount retweetCount'
+            }
+        }]).execPopulate();
 
         let arr = user.tweets;
         const totalTweets = user.tweets.length;
@@ -249,7 +253,13 @@ const getUserProfile = async (req, res) => {
 
         const user = isFollow.receiver;
 
-        await user.populate([{ path: 'tweets' }, { path: 'retweets' }]).execPopulate();
+        await user.populate([{ path: 'tweets' }, { 
+            path: 'retweets',
+            populate: {
+                path: 'tweet',
+                select: 'text name handle likeCount replyCount retweetCount'
+            }
+        }]).execPopulate();
 
         let arr = user.tweets;
         const totalTweets = user.tweets.length;
@@ -287,6 +297,8 @@ const getUserProfile = async (req, res) => {
             totalFollowing: user.followingList.length,
             totalFollowers: user.followerList.length
         });
+
+        // res.send(arr);
 
     } catch (e) {
         res.status(500).send(e);
@@ -394,6 +406,8 @@ const getUserFollowing = async (req, res) => {
             arr: following,
             type: 'following'
         });
+
+        // res.send(following);
 
     } catch (e) {
         res.status(500).send();

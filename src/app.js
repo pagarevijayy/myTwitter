@@ -21,6 +21,14 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../views/public'));
 hbs.registerPartials(path.join(__dirname, '../views/partials'));
 
+//hbs helper
+hbs.registerHelper('if_eq', function(a, b, opts) {
+    if(a == b) 
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
+});
+
 
 app.use(function(req, res, next) {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
