@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Retweet = require('../models/retweet');
 const Replie = require('../models/reply');
+const Like = require('../models/like');
 
 
 const isReqBodyValid = (body, fields) => {
@@ -33,21 +34,29 @@ const isFollow = async (initatorId, receiverHandle) => {
 
 };
 
-const getTweets = async (userId) => {
+const likesTweet = async (initatorId, tweetId) => {
+    return await Like.findOne({ user: initatorId, tweet: tweetId });
+};
 
-    const latestRetweets = await Tweet.find({ user: userId })
+
+
+
+const getTweets = async (currentUserId, followingUserId) => {
+
+    const latestTweets = await Tweet.find({ user: followingUserId })
         .sort({ createdAt: -1 })
         .limit(4)
         .populate('user', 'name handle')
         .lean();
 
-    if (latestRetweets.length) {
+    if (latestTweets.length) {
 
-        latestRetweets.forEach((element) => {
+        latestTweets.forEach(async (element) => {
             element.type = "tweet";
+            element.likes = await likesTweet(currentUserId, element._id) ? true : false;
         });
 
-        return latestRetweets;
+        return latestTweets;
 
     }
 
@@ -164,6 +173,7 @@ const upload = multer({
 module.exports = {
     isReqBodyValid,
     isFollow,
+    likesTweet,
     getTweets,
     getRetweets,
     getReplies,

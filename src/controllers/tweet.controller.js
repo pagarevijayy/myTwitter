@@ -78,11 +78,16 @@ const likeTweet = async (req, res) => {
 
     try {
 
-        const existingLike = await Like.findOne({ user: req.user._id, tweet: req.body.tweet });
+        const existingLike = await utils.likesTweet(req.user._id, req.body.tweet);
+
         if (existingLike) {
+
             await existingLike.remove();
             const tweet = await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { 'likeCount': -1 } }, { new: true });
-            return res.send(tweet);
+
+            return res.send({
+                likes: tweet.toObject().likeCount
+            });
         }
         const like = new Like({ user: req.user._id, tweet: req.body.tweet });
 
@@ -95,7 +100,9 @@ const likeTweet = async (req, res) => {
             return res.status(400).send();
         }
 
-        res.send(tweet);
+        res.send({
+            likes: tweet.toObject().likeCount
+        });
 
     } catch (e) {
         res.status(500).send(e);
@@ -287,11 +294,11 @@ const home = async (req, res) => {
 
         let arr = [];
 
-        for (const userId of req.user.followingList) {
+        for (const followingUserId of req.user.followingList) {
 
-            const latestTweets = await utils.getTweets(userId);
-            const latestRetweets = await utils.getRetweets(userId);
-            const latestRepies = await utils.getReplies(userId);
+            const latestTweets = await utils.getTweets(req.user._id, followingUserId);
+            const latestRetweets = await utils.getRetweets(followingUserId);
+            const latestRepies = await utils.getReplies(followingUserId);
 
             if (latestTweets) arr = arr.concat(latestTweets);
             if (latestRetweets) arr = arr.concat(latestRetweets);
@@ -299,17 +306,18 @@ const home = async (req, res) => {
 
         }
 
-        if(arr.length === 0) {
+        if (arr.length === 0) {
             return res.render('home', {
                 message: 'Try following someone to get new feed.'
             });
-    
+
         }
 
-        //res.send(shuffle(arr));
         res.render('home', {
             arr: shuffle(arr)
         });
+
+        //res.send(shuffle(arr));
 
     } catch (e) {
         console.log(e);
@@ -329,5 +337,5 @@ module.exports = {
     reply,
     likeReply,
     deleteReply,
-    home 
+    home
 }

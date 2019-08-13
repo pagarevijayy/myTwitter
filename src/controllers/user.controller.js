@@ -389,7 +389,6 @@ const getUserFollowing = async (req, res) => {
 
         const following = await User.find({ _id: { $in: user.followingList } }, 'name handle bio');
 
-
         res.render('follow', {
             arr: following,
             type: 'following'
