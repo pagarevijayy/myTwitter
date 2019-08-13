@@ -306,7 +306,8 @@ const home = async (req, res) => {
     
         }
 
-        //res.send(shuffle(arr));
+        // res.send(shuffle(arr));
+        // res.send(arr);
         res.render('home', {
             arr: shuffle(arr)
         });
