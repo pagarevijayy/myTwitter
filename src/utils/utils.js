@@ -62,9 +62,9 @@ const getTweets = async (currentUserId, followingUserId) => {
 
 };
 
-const getRetweets = async (userId) => {
+const getRetweets = async (currentUserId, followingUserId) => {
 
-    const latestRetweets = await Retweet.find({ user: userId })
+    const latestRetweets = await Retweet.find({ user: followingUserId })
         .sort({ createdAt: -1 })
         .limit(4)
         .populate('user', 'name handle')
@@ -80,8 +80,9 @@ const getRetweets = async (userId) => {
 
     if (latestRetweets.length) {
 
-        latestRetweets.forEach((element) => {
+        latestRetweets.forEach(async (element) => {
             element.type = "retweet";
+            element.tweet.likes = await likesTweet(currentUserId, element.tweet._id) ? true : false;
         });
 
         return latestRetweets;

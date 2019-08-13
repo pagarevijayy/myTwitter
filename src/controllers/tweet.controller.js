@@ -294,10 +294,12 @@ const home = async (req, res) => {
 
         let arr = [];
 
+        const currentUserId = req.user._id;
+
         for (const followingUserId of req.user.followingList) {
 
-            const latestTweets = await utils.getTweets(req.user._id, followingUserId);
-            const latestRetweets = await utils.getRetweets(followingUserId);
+            const latestTweets = await utils.getTweets(currentUserId, followingUserId);
+            const latestRetweets = await utils.getRetweets(currentUserId, followingUserId);
             const latestRepies = await utils.getReplies(followingUserId);
 
             if (latestTweets) arr = arr.concat(latestTweets);

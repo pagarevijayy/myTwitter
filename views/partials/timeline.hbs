@@ -8,7 +8,7 @@
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
         <div class="media-body">
-            <h5 class="mt-0 d-inline-flex "><a class="link-rm-defaults text-body"
+            <h5 class="mt-0 d-inline-flex"><a class="link-rm-defaults text-body"
                     href="/user/{{element.user.handle}}">{{element.user.name}} </a></h5>
             <span class="d-inline-flex text-muted small">
                 <h6 class="font-weight-normal">@{{element.user.handle}}</h6>
@@ -51,9 +51,10 @@
     {{else}}
     <div>
         <small class="ml-5"> <i class="fa fa-retweet text-muted"></i> <a class=" text-body text-muted"
-                    href="/user/{{element.user.handle}}"> {{element.user.name}} Retweeted</a></small>
+                href="/user/{{element.user.handle}}"> {{element.user.name}} Retweeted</a></small>
     </div>
-    <div class="media border-bottom mt-2">
+    <div id="{{element.tweet._id}}" class="media border-bottom mt-2">
+
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
         <div class="media-body">
@@ -66,12 +67,7 @@
             <p class="mb-2">
                 {{element.tweet.text}}
             </p>
-            <div class="mb-1 pl-2">
-                <a href="#" class="link-rm-defaults text-muted">
-                    <span class="mr-5">
-                        <h6 class="d-inline-flex"><i class="fa fa-heart-o"></i></h6> {{element.tweet.likeCount}}
-                    </span>
-                </a>
+            <div class="mt-2 mb-1 pl-2">
 
                 <a href="#" class="link-rm-defaults text-muted ">
                     <span class="mr-5">
@@ -84,6 +80,19 @@
                         <h6 class="d-inline-flex"><i class="fa fa-retweet"></i></h6> {{element.tweet.retweetCount}}
                     </span>
                 </a>
+
+                <a href="#" class="link-rm-defaults text-muted like">
+                    <span class="mr-5">
+                        {{#if element.tweet.likes}}
+                        <h6 class="d-inline-flex"><i class="heart liked"></i></h6>
+                        {{else}}
+                        <h6 class="d-inline-flex"><i class="heart"></i></h6>
+                        {{/if}}
+                        <span class="like-count">{{element.tweet.likeCount}}</span>
+                    </span>
+                </a>
+
+
             </div>
         </div>
     </div>
