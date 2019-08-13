@@ -39,6 +39,11 @@ const likesTweet = async (initatorId, tweetId) => {
 };
 
 
+const isRetweeted = async (initatorId, tweetId) => {
+    return await Retweet.findOne({ user: initatorId, tweet: tweetId });
+};
+
+
 
 
 const getTweets = async (currentUserId, followingUserId) => {
@@ -53,7 +58,8 @@ const getTweets = async (currentUserId, followingUserId) => {
 
         latestTweets.forEach(async (element) => {
             element.type = "tweet";
-            element.likes = await likesTweet(currentUserId, element._id) ? true : false;
+            element.liked = await likesTweet(currentUserId, element._id) ? true : false;
+            element.retweeted = await isRetweeted(currentUserId, element._id) ? true : false;
         });
 
         return latestTweets;
@@ -82,7 +88,8 @@ const getRetweets = async (currentUserId, followingUserId) => {
 
         latestRetweets.forEach(async (element) => {
             element.type = "retweet";
-            element.tweet.likes = await likesTweet(currentUserId, element.tweet._id) ? true : false;
+            element.tweet.liked = await likesTweet(currentUserId, element.tweet._id) ? true : false;
+            element.tweet.retweeted = await isRetweeted(currentUserId, element.tweet._id) ? true : false;
         });
 
         return latestRetweets;
@@ -175,6 +182,7 @@ module.exports = {
     isReqBodyValid,
     isFollow,
     likesTweet,
+    isRetweeted,
     getTweets,
     getRetweets,
     getReplies,

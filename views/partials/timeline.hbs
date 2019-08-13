@@ -26,15 +26,23 @@
                     </span>
                 </a>
 
-                <a href="#" class="link-rm-defaults text-muted">
-                    <span class="mr-5">
-                        <h6 class="d-inline-flex"><i class="fa fa-retweet"></i></h6> {{element.retweetCount}}
+                <a href="#" class="link-rm-defaults text-muted retweet">
+
+                    <span class="mr-3">
+
+                        {{#if element.retweeted}}
+                        <img class="retweet-icon retweeted mr-3 mb-1" src="/img/retweeted.png" alt="">
+                        {{else}}
+                        <img class="retweet-icon mr-3 mb-1" src="/img/retweet.png" alt="">
+                        {{/if}}
+
+                        <span class="retweet-count">{{element.retweetCount}}</span>
                     </span>
                 </a>
 
                 <a href="#" class="link-rm-defaults text-muted like">
                     <span class="mr-5">
-                        {{#if element.likes}}
+                        {{#if element.liked}}
                         <h6 class="d-inline-flex"><i class="heart liked"></i></h6>
                         {{else}}
                         <h6 class="d-inline-flex"><i class="heart"></i></h6>
@@ -75,15 +83,24 @@
                     </span>
                 </a>
 
-                <a href="#" class="link-rm-defaults text-muted">
-                    <span class="mr-5">
-                        <h6 class="d-inline-flex"><i class="fa fa-retweet"></i></h6> {{element.tweet.retweetCount}}
+                <a href="#" class="link-rm-defaults text-muted retweet">
+
+                    <span class="mr-3">
+
+                        {{#if element.tweet.retweeted}}
+                        <img class="retweet-icon retweeted mr-3 mb-1" src="/img/retweeted.png" alt="">
+                        {{else}}
+                        <img class="retweet-icon mr-3 mb-1" src="/img/retweet.png" alt="">
+                        {{/if}}
+
+                        <span class="retweet-count">{{element.tweet.retweetCount}}</span>
                     </span>
+
                 </a>
 
                 <a href="#" class="link-rm-defaults text-muted like">
                     <span class="mr-5">
-                        {{#if element.tweet.likes}}
+                        {{#if element.tweet.liked}}
                         <h6 class="d-inline-flex"><i class="heart liked"></i></h6>
                         {{else}}
                         <h6 class="d-inline-flex"><i class="heart"></i></h6>

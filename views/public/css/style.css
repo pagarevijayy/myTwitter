@@ -74,6 +74,8 @@
     animation: 0.5s ease-in-out 0s 1 slideInFromTop;
 }
 
+/* like  */
+
 @keyframes heart-burst {
     from {
         background-position: left;
@@ -87,8 +89,8 @@
 
 
 .heart {
-    height: 13px;
     width: 50px;
+    height: 13px;
     background-image: url('https://cssanimation.rocks/images/posts/steps/heart.png');
     background-position: 0% 50%;
     background-repeat: no-repeat;
@@ -102,4 +104,10 @@
 
 .liked {
     background-position: 100% 50%;
+}
+
+/* retweet */
+
+.retweet-icon {
+    height: 18px;
 }
