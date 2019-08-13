@@ -70,7 +70,7 @@ const getRetweets = async (userId) => {
         .populate('user', 'name handle')
         .populate({
             path: 'tweet',
-            select: 'text',
+            select: 'text likeCount retweetCount replyCount',
             populate: {
                 path: 'user',
                 select: 'name handle'
