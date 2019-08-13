@@ -144,13 +144,15 @@ const retweet = async (req, res) => {
 
     try {
 
-        const existingRetweet = await Retweet.findOne({ user: req.user._id, tweet: req.body.tweet });
+        const existingRetweet = await utils.isRetweeted(req.user._id, req.body.tweet);
 
         if (existingRetweet) {
 
             await existingRetweet.remove();
             const tweet = await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { 'retweetCount': -1 } }, { new: true });
-            return res.send(tweet);
+            return res.send({
+                retweets: tweet.toObject().retweetCount
+            });
 
         }
 
@@ -159,7 +161,9 @@ const retweet = async (req, res) => {
 
         const tweet = await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { 'retweetCount': 1 } }, { new: true });
 
-        res.status(201).send(tweet);
+        return res.send({
+            retweets: tweet.toObject().retweetCount
+        });
 
     } catch (e) {
         res.status(400).send(e);
