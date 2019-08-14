@@ -45,4 +45,8 @@ router.get('/user/:handle/followers', auth, userController.getUserFollowers);
 // get user following
 router.get('/user/:handle/following', auth, userController.getUserFollowing);
 
+// get all user handles
+router.get('/handles', auth, userController.getAllUserHandles);
+
+
 module.exports = router;

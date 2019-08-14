@@ -1,5 +1,22 @@
 const socket = io();
 
+
+$(function() {
+    $.ajax({
+        method: 'GET',
+        url: '/handles',
+        dataType: 'json',
+        success: function(data) {
+
+            $('#search').autocomplete({
+                source: data,
+                autoFocus: true
+            });
+
+        }
+    });
+});
+
 $('#search').keypress(function(e) {
     if (e.keyCode == 13) {
         e.preventDefault();
@@ -178,7 +195,7 @@ socket.on('newRetweet', (data) => {
     const found = data.followerList.includes($.cookie('user_id'));
     if (found) {
         $('#noFollowing').html('');
-        
+
         $('.timeline').prepend(`
         <div class="real-time">
         <div>
@@ -227,4 +244,3 @@ socket.on('newRetweet', (data) => {
     </div>`);
     }
 })
-
