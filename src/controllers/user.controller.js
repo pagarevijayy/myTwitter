@@ -278,7 +278,7 @@ const getUserProfile = async (req, res) => {
 
         if (arr.length === 0) {
             return res.render('userProfile', {
-                message: 'There are no tweets to show from this account :)',
+                message: 'There are no tweets to show from this account :(',
                 hasTweeted: false,
                 name: user.name,
                 handle: user.handle,
@@ -418,6 +418,26 @@ const getUserFollowing = async (req, res) => {
 
 }
 
+const getAllUserHandles = async (req, res) => {
+
+    try {
+
+        const userHandleVals = [];
+
+        const userHandles = await User.find({}, '-_id handle').lean();
+
+        userHandles.forEach((element) => {
+            userHandleVals.push(element.handle);
+        });
+
+        res.send(userHandleVals);
+
+    } catch (e) {
+        res.status(500).send();
+    }
+
+};
+
 
 module.exports = {
     uploadAvatar,
@@ -434,5 +454,6 @@ module.exports = {
     getUserProfile,
     friendships,
     getUserFollowers,
-    getUserFollowing
+    getUserFollowing,
+    getAllUserHandles
 };
