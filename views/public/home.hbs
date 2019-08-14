@@ -40,11 +40,11 @@
                     </form>
                 </div>
 
-                {{#if followsSomeone}}
-                {{>timeline}}
-                {{else}}
+                {{#unless followsSomeone}}
                 {{>noFollowing}}
-                {{/if}}
+                {{/unless}}
+
+                {{>timeline}}
 
                 {{!-- <div id="socketTweets"></div> --}}
 
