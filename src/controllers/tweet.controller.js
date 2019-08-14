@@ -150,10 +150,9 @@ const retweet = async (req, res) => {
 
             await existingRetweet.remove();
             const tweet = await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { 'retweetCount': -1 } }, { new: true });
-            return res.send({
-                retweets: tweet.toObject().retweetCount
-            });
 
+            const tweetObject = tweet.toObject();
+            return res.send(tweetObject);
         }
 
         const retweet = new Retweet({ user: req.user._id, tweet: req.body.tweet });
@@ -161,9 +160,14 @@ const retweet = async (req, res) => {
 
         const tweet = await Tweet.findOneAndUpdate({ _id: req.body.tweet }, { $inc: { 'retweetCount': 1 } }, { new: true });
 
-        return res.send({
-            retweets: tweet.toObject().retweetCount
-        });
+        const tweetObject = tweet.toObject();
+        tweetObject.followerList = req.user.followerList;
+        tweetObject.retweetUserName = req.user.name;
+        tweetObject.retweetUserHandle = req.user.handle;
+        res.status(201).send(tweetObject);
+        // return res.send({
+        //     retweets: tweet.toObject().retweetCount
+        // });
 
     } catch (e) {
         res.status(400).send(e);
@@ -314,13 +318,15 @@ const home = async (req, res) => {
 
         if (arr.length === 0) {
             return res.render('home', {
-                message: 'Try following someone to get new feed.'
+                message: 'Try following someone to get new feed.',
+                followsSomeone: false
             });
 
         }
 
         res.render('home', {
-            arr: shuffle(arr)
+            arr: shuffle(arr),
+            followsSomeone: true
         });
 
         //res.send(shuffle(arr));
