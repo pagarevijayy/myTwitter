@@ -61,6 +61,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('retweet', (data) => {
-        socket.broadcast.emit('newTweet', data);
+        socket.broadcast.emit('newRetweet', data);
     });
 });
