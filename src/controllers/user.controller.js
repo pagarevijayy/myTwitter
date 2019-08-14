@@ -136,7 +136,7 @@ const getProfile = async (req, res) => {
 
     try {
 
-        await user.populate([{ path: 'tweets' }, { 
+        await user.populate([{ path: 'tweets' }, {
             path: 'retweets',
             populate: {
                 path: 'tweet',
@@ -160,6 +160,7 @@ const getProfile = async (req, res) => {
         if (arr.length === 0) {
             return res.render('myProfile', {
                 message: 'Waiting for your first tweet :)',
+                hasTweeted: false,
                 name: user.name,
                 handle: user.handle,
                 totalTweets,
@@ -171,6 +172,7 @@ const getProfile = async (req, res) => {
 
         res.render('myProfile', {
             arr,
+            hasTweeted: true,
             name: user.name,
             handle: user.handle,
             totalTweets,
@@ -253,7 +255,7 @@ const getUserProfile = async (req, res) => {
 
         const user = isFollow.receiver;
 
-        await user.populate([{ path: 'tweets' }, { 
+        await user.populate([{ path: 'tweets' }, {
             path: 'retweets',
             populate: {
                 path: 'tweet',
@@ -276,7 +278,8 @@ const getUserProfile = async (req, res) => {
 
         if (arr.length === 0) {
             return res.render('userProfile', {
-                message: 'Waiting for their first tweet :)',
+                message: 'There are no tweets to show from this account :)',
+                hasTweeted: false,
                 name: user.name,
                 handle: user.handle,
                 follows: isFollow.follows,
@@ -289,6 +292,7 @@ const getUserProfile = async (req, res) => {
 
         res.render('userProfile', {
             arr,
+            hasTweeted: true,
             name: user.name,
             handle: user.handle,
             follows: isFollow.follows,

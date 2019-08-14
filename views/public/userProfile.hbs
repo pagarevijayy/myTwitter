@@ -83,7 +83,9 @@
                 </div>
 
                 {{!-- Tweets and Retweets --}}
+                {{#unless hasTweeted}}
                 {{>noFollowing}}
+                {{/unless}}
                 {{>userTimeline}}
             </div>
         </div>
