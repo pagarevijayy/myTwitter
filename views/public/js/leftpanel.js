@@ -87,7 +87,7 @@ socket.on('newTweet', (data) => {
         $('#noFollowing').html('');
 
         $('.timeline').prepend(`
-        <div id="${data._id}" class="media border-bottom mt-4">
+        <div id="${data._id}" class="media border-bottom mt-4 real-time">
 
         <img src="https://previews.123rf.com/images/pandavector/pandavector1704/pandavector170400314/75968328-avatar-of-a-man-in-a-shirt-avatar-and-face-single-icon-in-cartoon-style-vector-symbol-stock-illustra.jpg"
             height="50px" width="50px" class="mr-3" alt="avatar">
@@ -180,6 +180,7 @@ socket.on('newRetweet', (data) => {
         $('#noFollowing').html('');
         
         $('.timeline').prepend(`
+        <div class="real-time">
         <div>
         <small class="ml-5"> <i class="fa fa-retweet text-muted"></i> <a class=" text-body text-muted"
                 href="/user/${data.retweetUserHandle}"> ${data.retweetUserName} Retweeted</a></small>
@@ -222,6 +223,7 @@ socket.on('newRetweet', (data) => {
                 </a>
             </div>
         </div>
+    </div>
     </div>`);
     }
 })
