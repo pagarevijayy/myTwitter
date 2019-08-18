@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "start": "node src/index.js",
-        "dev": "nodemon src/index.js -e js,hbs",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+        "test": "env-cmd -f ./config/test.env jest --watch --runInBand"
     },
     "repository": {
         "type": "git",
