@@ -1,39 +1,45 @@
 {
-  "name": "mytwitter",
-  "version": "1.0.0",
-  "description": "Twitter clone using Node.js and MongoDB",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js -e js,hbs",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pagarevijayy/myTwitter.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pagarevijayy/myTwitter/issues"
-  },
-  "homepage": "https://github.com/pagarevijayy/myTwitter#readme",
-  "devDependencies": {
-    "nodemon": "^1.19.1"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.4",
-    "express": "^4.17.1",
-    "hbs": "^4.0.4",
-    "jsonwebtoken": "^8.5.1",
-    "mention-hashtag": "^1.1.1",
-    "mongoose": "^5.6.7",
-    "multer": "^1.4.2",
-    "path": "^0.12.7",
-    "sharp": "^0.23.0",
-    "shuffle-array": "^1.0.1",
-    "socket.io": "^2.2.0",
-    "validator": "^11.1.0"
-  }
+    "name": "mytwitter",
+    "version": "1.0.0",
+    "description": "Twitter clone using Node.js and MongoDB",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+        "test": "env-cmd -f ./config/test.env jest --watch --runInBand"
+    },
+    "jest": {
+        "testEnvironment": "node"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pagarevijayy/myTwitter.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/pagarevijayy/myTwitter/issues"
+    },
+    "homepage": "https://github.com/pagarevijayy/myTwitter#readme",
+    "devDependencies": {
+        "env-cmd": "^9.0.3",
+        "jest": "^24.9.0",
+        "nodemon": "^1.19.1",
+        "supertest": "^4.0.2"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cookie-parser": "^1.4.4",
+        "express": "^4.17.1",
+        "hbs": "^4.0.4",
+        "jsonwebtoken": "^8.5.1",
+        "mention-hashtag": "^1.1.1",
+        "mongoose": "^5.6.7",
+        "multer": "^1.4.2",
+        "path": "^0.12.7",
+        "sharp": "^0.23.0",
+        "shuffle-array": "^1.0.1",
+        "socket.io": "^2.2.0",
+        "validator": "^11.1.0"
+    }
 }

@@ -1,6 +1,5 @@
 const socket = io();
 
-
 $(function() {
     $.ajax({
         method: 'GET',
@@ -243,4 +242,4 @@ socket.on('newRetweet', (data) => {
     </div>
     </div>`);
     }
-})
+});
