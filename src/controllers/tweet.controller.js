@@ -63,7 +63,7 @@ const tweet = async (req, res) => {
         res.status(201).send(tweetObject);
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 }
 
@@ -143,6 +143,10 @@ const retweet = async (req, res) => {
     }
 
     try {
+        const tweetExist = await Tweet.findOne({ _id: req.body.tweet});
+        if (!tweetExist) {
+            return res.status(400).send();
+        }
 
         const existingRetweet = await utils.isRetweeted(req.user._id, req.body.tweet);
 
@@ -170,7 +174,7 @@ const retweet = async (req, res) => {
         // });
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 }
 
