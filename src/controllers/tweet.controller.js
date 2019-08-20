@@ -218,6 +218,10 @@ const reply = async (req, res) => {
     }
 
     try {
+        const tweetExist = await Tweet.findOne({ _id: req.body.tweet});
+        if (!tweetExist) {
+            return res.status(400).send();
+        }
 
         const reply = new Replie({
             ...req.body,
@@ -229,7 +233,7 @@ const reply = async (req, res) => {
         res.status(201).send(reply);
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 
 }
@@ -245,6 +249,11 @@ const likeReply = async (req, res) => {
 
 
     try {
+        const replyExist = await Replie.findOne({ _id: req.body.reply});
+        if (!replyExist) {
+            return res.status(400).send();
+        }
+
         const existingLike = await Like.findOne({ user: req.user._id, reply: req.body.reply });
 
         if (existingLike) {
@@ -291,7 +300,7 @@ const deleteReply = async (req, res) => {
         await reply.remove();
         await Tweet.findOneAndUpdate({ _id: replyObject.tweet }, { $inc: { replyCount: -1 } });
 
-        res.send(reply);
+        res.status(200).send(reply);
 
     } catch (e) {
         res.status(500).send(e);
