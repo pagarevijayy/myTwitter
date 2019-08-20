@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
+const Like = require('../models/like');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

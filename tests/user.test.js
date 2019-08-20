@@ -311,6 +311,4 @@ describe('Auth required', () => {
 
     });
 
-
-
 });
