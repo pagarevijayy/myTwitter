@@ -11,26 +11,30 @@ const shuffle = require('shuffle-array');
 
 
 //search - handle and hastags
-// => /search?handle=abc%20xyz
+// => /search?handle=abcxyz
 // => /search?hashtag=xyz
 const search = async (req, res) => {
     try {
-        const searchHandle = await User.findOne({ handle: req.query.handle });
-
-        const searchHashtag = await Tweet.find({ hashtags: req.query.hashtag });
 
         if (req.query.handle) {
-            if (searchHandle.length === 0) {
+            const searchHandle = await User.findOne({ handle: req.query.handle });
+
+            if (!searchHandle) {
                 return res.status(404).send();
             }
 
-            res.send(searchHandle);
-        } else {
-            if (searchHashtag.length === 0) {
+            return res.send(searchHandle);
+        }
+
+        //Hashtag feature not ingetrated (in FE and test cases)
+        if (req.query.hashtag) {
+            const searchHashtag = await Tweet.find({ hashtags: req.query.hashtag });
+
+            if (!searchHashtag) {
                 return res.status(404).send();
             }
 
-            res.send(searchHashtag);
+            return res.send(searchHashtag);
         }
 
     } catch (e) {
@@ -63,7 +67,7 @@ const tweet = async (req, res) => {
         res.status(201).send(tweetObject);
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 }
 
@@ -143,6 +147,10 @@ const retweet = async (req, res) => {
     }
 
     try {
+        const tweetExist = await Tweet.findOne({ _id: req.body.tweet });
+        if (!tweetExist) {
+            return res.status(400).send();
+        }
 
         const existingRetweet = await utils.isRetweeted(req.user._id, req.body.tweet);
 
@@ -170,7 +178,7 @@ const retweet = async (req, res) => {
         // });
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 }
 
@@ -214,6 +222,10 @@ const reply = async (req, res) => {
     }
 
     try {
+        const tweetExist = await Tweet.findOne({ _id: req.body.tweet });
+        if (!tweetExist) {
+            return res.status(400).send();
+        }
 
         const reply = new Replie({
             ...req.body,
@@ -225,7 +237,7 @@ const reply = async (req, res) => {
         res.status(201).send(reply);
 
     } catch (e) {
-        res.status(400).send(e);
+        res.status(500).send(e);
     }
 
 }
@@ -241,6 +253,11 @@ const likeReply = async (req, res) => {
 
 
     try {
+        const replyExist = await Replie.findOne({ _id: req.body.reply });
+        if (!replyExist) {
+            return res.status(400).send();
+        }
+
         const existingLike = await Like.findOne({ user: req.user._id, reply: req.body.reply });
 
         if (existingLike) {
@@ -287,7 +304,7 @@ const deleteReply = async (req, res) => {
         await reply.remove();
         await Tweet.findOneAndUpdate({ _id: replyObject.tweet }, { $inc: { replyCount: -1 } });
 
-        res.send(reply);
+        res.status(200).send(reply);
 
     } catch (e) {
         res.status(500).send(e);
@@ -332,7 +349,6 @@ const home = async (req, res) => {
         //res.send(shuffle(arr));
 
     } catch (e) {
-        console.log(e);
         res.status(500).send();
     }
 
