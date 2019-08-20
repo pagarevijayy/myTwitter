@@ -4,6 +4,7 @@ const User = require('../../src/models/user');
 
 
 const userOneId = new mongoose.Types.ObjectId();
+const userTwoId = new mongoose.Types.ObjectId();
 
 const userOne = {
     _id: userOneId,
@@ -16,6 +17,17 @@ const userOne = {
     }]
 };
 
+const userTwo = {
+    _id: userTwoId,
+    name: 'ajay',
+    handle: 'aja-1',
+    email: 'ajay@gmail.com',
+    password: 'password123',
+    tokens: [{
+        token: jwt.sign({ _id: userTwoId }, process.env.JWT_SECRET)
+    }]
+};
+
 const setupDatabase = async () => {
 
     await User.deleteMany();
@@ -23,4 +35,4 @@ const setupDatabase = async () => {
 
 };
 
-module.exports = { userOneId, userOne, setupDatabase };
+module.exports = { userOneId, userTwoId, userOne, userTwo, setupDatabase };
