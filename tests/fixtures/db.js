@@ -10,12 +10,12 @@ const Replie = require('../../src/models/reply');
 
 
 const userOneId = new mongoose.Types.ObjectId();
+const userTwoId = new mongoose.Types.ObjectId();
+
 const tweetOneId = new mongoose.Types.ObjectId();   // to create retweet while testing
 const tweetTwoId = new mongoose.Types.ObjectId();   //to create existing retweet
 const retweetOneId = new mongoose.Types.ObjectId();
 const replyOneId = new mongoose.Types.ObjectId();
-
-
 
 const userOne = {
     _id: userOneId,
@@ -25,6 +25,17 @@ const userOne = {
     password: 'password123',
     tokens: [{
         token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET)
+    }]
+};
+
+const userTwo = {
+    _id: userTwoId,
+    name: 'ajay',
+    handle: 'aja-1',
+    email: 'ajay@gmail.com',
+    password: 'password123',
+    tokens: [{
+        token: jwt.sign({ _id: userTwoId }, process.env.JWT_SECRET)
     }]
 };
 
@@ -63,5 +74,8 @@ const setupDatabase = async () => {
     await new Replie(replyOne).save();
 };
 
-module.exports = { userOneId, tweetOneId, tweetTwoId, retweetOneId, replyOneId, userOne, tweetOne, retweetOne, replyOne, setupDatabase };
+
+module.exports = { userOneId, userTwoId, userOne, userTwo, setupDatabase };
+
+module.exports = { userOneId, userTwoId, tweetOneId, tweetTwoId, retweetOneId, replyOneId, userOne, userTwo, tweetOne, retweetOne, replyOne, setupDatabase };
 // Not a good case to destructure :p

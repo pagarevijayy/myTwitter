@@ -65,7 +65,7 @@ const signUp = async (req, res) => {
         res.status(201).send({ redirect: '/home' });
 
     } catch (e) {
-        res.status(400).send();
+        res.status(400).send(e);
     }
 
 };
@@ -201,7 +201,6 @@ const updateProfile = async (req, res) => {
         await req.user.save();
         res.send(req.user);
     } catch (e) {
-        console.log(e);
         res.status(400).send(e);
     }
 }
@@ -373,6 +372,11 @@ const getUserFollowers = async (req, res) => {
 
         if (req.user.handle !== req.params.handle) {
             user = await User.findOne({ handle: req.params.handle });
+
+            if (!user) {
+                return res.status(400).send();
+            }
+
         } else {
             user = req.user;
         }
@@ -399,6 +403,11 @@ const getUserFollowing = async (req, res) => {
 
         if (req.user.handle !== req.params.handle) {
             user = await User.findOne({ handle: req.params.handle });
+
+            if (!user) {
+                return res.status(400).send();
+            }
+
         } else {
             user = req.user;
         }
