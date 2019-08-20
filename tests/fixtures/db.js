@@ -12,8 +12,8 @@ const Replie = require('../../src/models/reply');
 const userOneId = new mongoose.Types.ObjectId();
 const userTwoId = new mongoose.Types.ObjectId();
 
-const tweetOneId = new mongoose.Types.ObjectId();   // to create retweet while testing
-const tweetTwoId = new mongoose.Types.ObjectId();   //to create existing retweet
+const tweetOneId = new mongoose.Types.ObjectId(); // to create retweet while testing
+const tweetTwoId = new mongoose.Types.ObjectId(); //to create existing retweet
 const retweetOneId = new mongoose.Types.ObjectId();
 const replyOneId = new mongoose.Types.ObjectId();
 
