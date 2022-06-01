@@ -37,7 +37,7 @@
         "mongoose": "^5.6.7",
         "multer": "^1.4.2",
         "path": "^0.12.7",
-        "sharp": "^0.23.0",
+        "sharp": "^0.30.5",
         "shuffle-array": "^1.0.1",
         "socket.io": "^2.2.0",
         "validator": "^11.1.0"
